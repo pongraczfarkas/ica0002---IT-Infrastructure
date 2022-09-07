@@ -1,0 +1,20 @@
+- name: Setting up user 'juri'
+  ansible.builtin.user:
+    name: juri
+    group: users
+    
+- name: Setting up user 'roman'
+  ansible.builtin.user:
+    name: roman
+    group: users
+    
+- name: Set SSH keys from URL for 'juri'
+  ansible.posix.authorized_key:
+    user: juri
+    key: https://github.com/hudolejev.keys
+    
+- name: Set SSH keys from URL for 'roman'
+  ansible.posix.authorized_key:
+    user: roman
+    key: https://github.com/romankuchin.keys
+
