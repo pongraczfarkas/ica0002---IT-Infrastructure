@@ -1,8 +1,23 @@
 - name: Install nginx
   ansible.builtin.apt:
     name: nginx
+    state: latest
+    update_cache: yes
     
 - name: Copy index page
   ansible.builtin.copy:
     src: files/index.html
     dest: /var/www/html/index.html
+    follow: no
+    
+- name: Copy nginx configuration
+  ansible.builtin.copy:
+    src: default
+    dest: /etc/nginx/sites-enabled/default
+  notify: Restart nginx
+  
+- name: Start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes  

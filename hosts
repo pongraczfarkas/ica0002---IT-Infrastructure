@@ -1,4 +1,4 @@
-pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=18922 ansible_ssh_user=ubuntu
+pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=13822 ansible_ssh_user=ubuntu
 
 [web_servers]
 pongraczfarkas-1
