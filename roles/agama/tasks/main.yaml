@@ -10,12 +10,12 @@
     owner: agama
     mode: 0755
     
-- name: "Install 'python3-flask-sqlalchemy' package"
+- name: "Install 'python3-flask-sqlalchemy' and 'python3-pymysql' packages"
   ansible.builtin.apt:
-    name: python3-flask-sqlalchemy
-    state: latest
-    update_cache: yes
-    
+    name: 
+      - python3-flask-sqlalchemy
+      - python3-pymysql
+
 - name: "Download 'agama.py'"
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
