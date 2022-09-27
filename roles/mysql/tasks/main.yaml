@@ -26,3 +26,10 @@
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+    
+- name: Start mysql server
+  ansible.builtin.service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes

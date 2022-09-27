@@ -1,17 +1,34 @@
   - name: Init
     hosts: db_servers, web_servers
+    gather_facts: no
     become: yes
     roles:
       - init
       
+  - name: Collect info about all the VMs
+    hosts: all
+    gather_facts: yes
+    become: yes
+    tasks:
+      - setup:
+      
+  - name: Bind9 DNS server
+    hosts: dns_servers
+    gather_facts: no
+    become: yes
+    roles:
+      - bind
+      
   - name: Database server
     hosts: db_servers
+    gather_facts: no
     become: yes
     roles:
       - mysql
 
   - name: Web server
     hosts: web_servers
+    gather_facts: no
     become: yes
     roles:
       - agama
