@@ -1,5 +1,5 @@
 $TTL	604800
-{{ domain }}.	IN	SOA	pongraczfarkas-1.{{ domain }}. pongraczfarkas-2.{{ domain }}. (
+{{ startup }}.	IN	SOA	pongraczfarkas-1.{{ startup }}. pongraczfarkas-2.{{ startup }}. (
 			      2		; Serial
 			 604800		; Refresh
 			  86400		; Retry
@@ -8,7 +8,7 @@ $TTL	604800
 ;
 
 {% for vm in groups['dns_servers'] %}
-{{ domain }}.	IN	NS	{{ vm }}
+{{ startup }}.	IN	NS	{{ vm }}
 {% endfor %}
 
 {% for vm in groups['all'] %}

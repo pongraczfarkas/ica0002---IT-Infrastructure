@@ -1,11 +1,13 @@
-acl lan { 192.168.42.0/24; 127.0.0.0/8; };
+acl lan {
+{% for i in allowed -%}
+{{i}}
+{%endfor%}};
 options {
 	directory "/var/cache/bind";
     forwarders {
        {% for i in forwarders -%}
        {{i}};
-       {%endfor%}
-       };
+       {%endfor%}};
     allow-query {
         lan;
     };

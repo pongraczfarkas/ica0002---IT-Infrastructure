@@ -33,3 +33,15 @@
     state: started
     enabled: yes
   become: yes
+  
+- name: Resolv.conf to vm2 
+  ansible.builtin.template:
+   src: resolv.conf.j2
+   dest: /etc/resolv.conf
+  notify: rndc reload
+
+- name: Stop service systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: no

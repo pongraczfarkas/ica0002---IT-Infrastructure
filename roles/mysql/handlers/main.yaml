@@ -3,3 +3,6 @@
     name: mysql
     state: restarted
     enabled: yes
+    
+- name: rndc reload
+  ansible.builtin.shell: rndc reload

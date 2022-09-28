@@ -16,8 +16,7 @@ forwarders:
   - 9.9.9.10
   
 allowed:
- - 192.168.42.0/23;
+ - 192.168.42.0/24;
  - 127.0.0.0/8;
  
-domain: worldismine.fp
-zone: db.worldismine
+startup: db.worldismine

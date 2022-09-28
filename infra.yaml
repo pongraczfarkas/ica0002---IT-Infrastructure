@@ -13,7 +13,7 @@
       - setup:
       
   - name: Bind9 DNS server
-    hosts: dns_servers
+    hosts: dns_server
     gather_facts: no
     become: yes
     roles:

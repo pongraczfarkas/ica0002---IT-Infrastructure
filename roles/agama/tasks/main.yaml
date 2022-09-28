@@ -16,7 +16,6 @@
 - name: "Install 'python3-pymysql'"
   ansible.builtin.apt:
     name: python3-pymysql
-    state: latest
 
 - name: "Download 'agama.py'"
   ansible.builtin.get_url:
