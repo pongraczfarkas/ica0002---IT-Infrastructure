@@ -32,5 +32,5 @@
     become: yes
     roles:
       - agama
-      - nginx
       - uwsgi
+      - nginx
