@@ -1,0 +1,15 @@
+- name: Download prometheus
+  ansible.builtin.apt:
+    name: prometheus
+    
+- name: Copy prometheus.j2 template
+  ansible.builtin.template:
+    src: prometheus.j2
+    dest: /etc/default/prometheus
+  notify: Restart prometheus
+    
+- name: Copy prometheus.yml.j2 template
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+  notify: Restart prometheus

@@ -16,7 +16,7 @@
 - name: Upload db.worldismine
   ansible.builtin.template:
     src: db.worldismine
-    dest: /var/cache/bind/db.worldismine
+    dest: /var/cache/bind/{{ startup }}
     
 - name: Upload named.conf.local
   ansible.builtin.template:

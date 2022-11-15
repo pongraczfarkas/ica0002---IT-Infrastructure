@@ -25,12 +25,30 @@
     become: yes
     roles:
       - mysql
+      
+  - name: Node exporters
+    hosts: all
+    become: yes
+    roles:
+      - node_exporter
+      
+  - name: Prometheus
+    hosts: prometheus
+    become: yes
+    roles:
+      - prometheus
 
   - name: Web server
     hosts: web_servers
-    gather_facts: no
     become: yes
     roles:
+      - users
       - agama
       - uwsgi
+      
+  - name: Nginx on both vms
+    hosts: all
+    become: yes
+    roles:
       - nginx
+      
