@@ -1,0 +1,21 @@
+- name: Install duplicity
+  apt:
+    name: duplicity
+
+- name: Create the backup directory for influxdb
+  file:
+    path: /home/backup/influxdb
+    state: directory
+    mode: 0744
+    owner: "{{ backup_user }}"
+    group: influxdb
+
+
+
+- name: Copy influxdb cron
+  template:
+    src: influxdb-backup.j2
+    dest: /etc/cron.d/influxdb-backup
+    owner: root
+    group: root
+    mode: 0744

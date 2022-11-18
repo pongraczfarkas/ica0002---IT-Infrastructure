@@ -1,17 +1,25 @@
-- name: Update the repository cache and update package "nginx" to latest version
+- name: Install 'nginx'
   apt:
     name: nginx
-    #update_cache: yes
+    state: latest
+    update_cache: yes
 
-- name: If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf
-  ansible.builtin.copy:
-    src: index.html
-    dest: /var/www/html/index.html
-    follow: no
+- name: Copy Nginx configuration
+  copy:
+    src: default
+    dest: /etc/nginx/sites-enabled/default
+  notify: Restart nginx
 
-- name: Copy file with owner and permissions
+
+- name: Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports
   template:
     src: default.j2
     dest: /etc/nginx/sites-enabled/default
     mode: '0644'
   notify: Restart nginx
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes

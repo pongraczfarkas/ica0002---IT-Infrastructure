@@ -24,7 +24,7 @@
     "gnetId": 12433,
     "graphTooltip": 0,
     "id": 2,
-    "iteration": 1638276306718,
+    "iteration": 1638225833158,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -986,9 +986,7 @@
       ]
     },
     "timezone": "",
-    "title": "Syslog",
+    "title": "syslog",
     "uid": "TIYeHqRgZ",
-    "version": 1
+    "version": 3
   }
-
-  

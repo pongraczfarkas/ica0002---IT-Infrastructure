@@ -1,0 +1,36 @@
+- name: Install duplicity
+  apt:
+    name: duplicity
+
+
+- name: Create the backup directory for mysql
+  file:
+    path: /home/backup/mysql
+    state: directory
+    mode: 0777
+
+- name: Create MySQL backup user
+  mysql_user:
+    name: "{{ backup_user }}"
+    password: "{{ mysql_password }}"
+    priv: "{{ mysql_database }}.*:SELECT,LOCK TABLES"
+    host: "localhost"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+- name: Copy MySQL configuration file
+  template:
+    src: backup.my.cnf.j2
+    dest: /home/backup/.my.cnf
+    owner: backup
+    group: backup
+    mode: 0700
+
+
+- name: Copy mysql cron
+  template:
+    src: mysql-backup.j2
+    dest: /etc/cron.d/mysql-backup
+    owner: root
+    group: root
+    mode: 0744

@@ -1,82 +1,138 @@
-- name: Init
-  hosts: db_servers, web_servers
-  gather_facts: no
-  become: yes
-  roles:
-    - init
+  - name: Collect info about all VMs
+    hosts: all
+    gather_facts: yes
+    become: yes
+    tasks:
+      - setup:
+    tags:
+      - se  
 
-- name: Collect info about all VMs
-  hosts: all
-  gather_facts: yes
-  tasks:
-    - setup:
+  - name: init
+    hosts: web_servers, db_servers
+    become: 1
+    roles:
+      - init
+    tags:
+      - up
 
-- name: Bind9 DNS server
-  hosts: dns_server
-  gather_facts: no
-  become: yes
-  roles:
-    - bind
-    - bind_exporter
+  - name : bind
+    hosts : dns_server
+    gather_facts: yes
+    become: 1
+    roles:
+      - bind 
+    tags:
+      - dns
 
-- name: Prometheus
-  hosts: prometheus
-  become: yes
-  roles:
-    - prometheus
-  tags:
-    - p
+  - name : add dns server to all host 
+    hosts : all
+    become: 1
+    roles:
+        - dns
+    tags:
+      - dns2
 
-- name: Database server
-  hosts: db_servers
-  become: yes
-  roles:
-    - mysql
-    - mysql_exporter
+  - name: Database servers
+    hosts: db_servers
+    become: 1
+    roles:
+      - mysql
+      - mysql_backup
+      - mysql_exporter 
+    tags:
+      - db
+ 
 
-- name: Node
-  hosts: all
-  become: yes
-  roles:
-    - node_exporter
 
-- name: Ansible webservers LAB2
-  hosts: web_servers
-  become: yes
-  roles:
-    - users
-    - agama
-    - uwsgi
+  - name: web_app
+    hosts: web_servers
+    become: yes
+    roles:
+      - agama
+      - uwsgi
+      - nginx
+    tags:
+      - ws
 
-- name: nginx
-  hosts: all
-  become: yes
-  roles:
-    - nginx
-    - nginx_exporter
-  tags:
-    - ng
+  - name: vm2 exporters
+    hosts: vm2_exporters
+    gather_facts: yes
+    become: yes
+    roles:
+      - node_exporter 
+      - bind_exporter 
+    tags:
+      - vm2Exp
 
-- name: Grafana
-  hosts: grafana
-  become: yes
-  roles:
-    - grafana
-  tags:
-   - g
-   
-- name: InfluxDB
-  hosts: influxdb
-  become: yes
-  roles:
-    - influxdb
-    - pinger
-    - influxdb_exporter
-    
-- name: Rsyslog
-  hosts: all
-  become: yes
-  roles:
-    - rsyslog
-  tags:
-    - r
+  - name: vm1 exporters
+    hosts: vm1_exporters
+    gather_facts: yes
+    become: yes
+    roles:
+      - node_exporter 
+      - nginx_exporter 
+    tags:
+      - vm1Exp
+
+
+  - name: prometeus
+    hosts: prometheus
+    become: yes
+    roles:
+      - prometheus
+    tags:
+      - prom
+
+  - name: Install InfluxDB and Telegraf
+    hosts: influx_telegrapf
+    gather_facts: no
+    become: yes
+    roles:
+      - influxdb
+      - influxdb_exporter
+      - influxdb_backup
+    tags:
+      - influx
+
+  - name: Pinger
+    hosts: pinger
+    gather_facts: no
+    become: yes
+    roles:
+      - pinger
+    tags:
+      - pinger
+      
+  - name: rsyslog
+    hosts: rsyslog
+    gather_facts: no
+    become: yes
+    roles:
+      - rsyslog
+    tags:
+      - rsyslog
+
+  - name: grafana
+    hosts: grafana
+    become: yes
+    roles:
+      - grafana
+    tags:
+      - graf
+
+  - name: backup
+    hosts: backup
+    become: yes
+    roles:
+      - backup
+    tags:
+      - backup
+
+
+
+
+
+
+
+
+

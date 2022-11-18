@@ -1,20 +1,32 @@
-acl lan {192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; };
+
+acl lan { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; };
 options {
-	directory "/var/cache/bind";
+        directory "/var/lib/bind";
 
-	forwarders {
-                {% for r in route -%}
-                {{r}};
-                {%endfor%}
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable 
+        // nameservers, you probably want to use them as forwarders.  
+        // Uncomment the following block, and insert the addresses replacing 
+        // the all-0's placeholder.
+
+        forwarders {
+            {% for ip in forwarders -%}
+                {{ip}};
+            {%endfor%}
          };
-	allow-query {
-	   lan;
-	};
 
-	dnssec-validation no;
+        allow-query { 
+            lan; 
+        };
+        dnssec-validation no;
 
+        listen-on-v6 { any; };
 };
 
+
 statistics-channels {
-	inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
+  inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
 };

@@ -1,24 +1,26 @@
-- name: Linux user agama
-  ansible.builtin.user:
+- name: Add the user agama
+  user:
     name: agama
+    system: yes
+    state: present
 
-- name: Create a directory if it does not exist
-  ansible.builtin.file:
-    path: /opt/agama
+- name: Create install directory /opt/agama
+  file:
     state: directory
+    path: /opt/agama
     owner: agama
-    mode: '0755'
+    mode: 0755
 
-- name: Update the repository cache and update package "python3-flask-sqlalchemy" to latest version
-  apt:
-    name:
-     - python3-flask-sqlalchemy
-     - python3-pymysql
-    #state: latest
-    #update_cache: yes
+- name: Install download 'python3-flask-sqlalchemy'
+  apt: 
+    name: 
+      - python3-flask-sqlalchemy
+      - python3-pymysql 
+    state: latest
+    update_cache: yes
 
-- name: Download agama
+- name: Download agama.py
   get_url:
     url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
-    dest: /opt/agama/
-    mode: '0755'
+    dest: /opt/agama/agama.py
+    mode: 0644

@@ -1,0 +1,3 @@
+- template:
+    dest: /etc/resolv.conf 
+    src: resolv.conf.j2

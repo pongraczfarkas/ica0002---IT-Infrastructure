@@ -1,0 +1,9 @@
+[auth.generic_oauth]
+name = Okta
+enabled = true
+scopes = openid profile email
+client_id = 0oa76uf39o9bqOxQl5d7
+client_secret = r5b7mG8YVMz7vqCJiEu3bFhOiMm9SSSEPE9UbQX1
+auth_url = https://dev-7042707.okta.com/oauth2/v1/authorize
+token_url = https://dev-7042707.okta.com/oauth2/v1/token
+api_url = https://dev-7042707.okta.com/oauth2/v1/userinfo

@@ -1,3 +1,4 @@
+
 # Sample config for Prometheus.
 
 global:
@@ -11,38 +12,13 @@ scrape_configs:
     metrics_path: /prometheus/metrics
     static_configs:
       - targets: ['localhost:9090']
+{% for job in prometheus_jobs %}
+  - job_name: {{job['name']}}
+    static_configs:
+      - targets:
+{% for vm in groups[job['target_group']] %}
+        - {{vm}}:{{job['target_port']}}
+{% endfor %}
+{% endfor %}
 
-  - job_name: linux
-    static_configs:
-      - targets:
-        {% for vm in groups['all'] %}
-        - {{ vm }}:9100
-        {% endfor %}
 
-  - job_name: bind9
-    static_configs:
-      - targets:
-        {% for vm in groups['dns_server'] %}
-        - {{ vm }}:9119
-        {% endfor %}
-
-  - job_name: mysql
-    static_configs:
-      - targets:
-        {% for vm in groups['db_servers'] %}
-        - {{ vm }}:9104
-        {% endfor %}
-
-  - job_name: nginx
-    static_configs:
-      - targets:
-        {% for vm in groups['all'] %}
-        - {{ vm }}:9113
-        {% endfor %}
-        
-  - job_name: influxdb
-    static_configs:
-      - targets:
-        {% for vm in groups['influxdb'] %}
-        - {{ vm }}:9424
-        {% endfor %}

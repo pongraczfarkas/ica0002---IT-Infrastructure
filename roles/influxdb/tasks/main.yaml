@@ -1,26 +1,41 @@
-- name: Add influxdb apt key
-  ansible.builtin.apt_key:
+- name: Add influx and telegraf key
+  apt_key:
     url: https://repos.influxdata.com/influxdb.key
-    state: present
 
-- name: Add influxdb's repository into sources list
-  ansible.builtin.apt_repository:
-    repo: deb https://repos.influxdata.com/ubuntu focal stable
-    state: present
-  notify: Apt update
+- name: Add influx and telegraf repository into sources list
+  apt_repository:
+    repo: deb https://repos.influxdata.com/debian focal stable
 
-- name: Install influxdb and telegraf
+- name: Install 'influxdb'
   apt:
-    name: 
-      - influxdb
-      - telegraf
-  notify: 
-      - Start service influxdb
-      - Start service telegraf
+    name: influxdb
 
+- name: Ensure influxdb is running
+  service:
+    name: influxdb
+    state: started
+    enabled: yes
 
-- name: Copy telegraf.conf
-  template:
+- name: Install 'telegraf'
+  apt:
+    name: telegraf
+
+- name: Ensure Telegraf is running
+  service:
+    name: telegraf
+    state: started
+    enabled: yes
+
+- name: Copy the telegraf config file and Restart telegraf
+  copy:
     src: telegraf.conf
     dest: /etc/telegraf/telegraf.conf
+    mode: 0644
   notify: Restart telegraf
+
+- name: Execute handlers preemptively
+  meta: flush_handlers
+
+- name: Sleep for 10 seconds and continue with play
+  wait_for:
+    timeout: 10

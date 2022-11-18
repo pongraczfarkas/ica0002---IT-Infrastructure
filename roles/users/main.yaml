@@ -1,0 +1,20 @@
+- name: Add user Juri 
+  ansible.builtin.user:
+    name: hudolejev
+
+- name: Set authorized keys taken from github keys Juri
+  ansible.posix.authorized_key:
+    user: hudolejev
+    # state: present what is default?
+    key: https://github.com/hudolejev.keys
+
+
+- name: Add user 'roman' 
+  ansible.builtin.user:
+    name: romankuchin
+
+- name: Set authorized keys taken from github keys 'roman'
+  ansible.posix.authorized_key:
+    user: romankuchin
+    # state: present
+    key: https://github.com/romankuchin.keys

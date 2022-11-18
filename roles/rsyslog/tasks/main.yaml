@@ -1,6 +1,16 @@
-- name: Copy 10-telegraf.conf to ALL remote machines
-  ansible.builtin.template:
-    src: 10-telegraf.conf.j2
-    dest: /etc/rsyslog.d/10-telegraf.conf
-  notify:
-    - Restart rsyslog
+- name: Install Rsyslog
+  apt:
+    name: rsyslog
+    state: latest
+
+- name: Reconfigure Rsyslog
+  template:
+    src: 50-telegraf.conf.j2
+    dest: /etc/rsyslog.d/50-telegraf.conf
+  notify: Restart Rsyslog
+
+- name: start rsyslog
+  service:
+    name: rsyslog
+    state: started
+    enabled: yes

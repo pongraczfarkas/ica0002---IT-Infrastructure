@@ -1,6 +1,10 @@
 mysql_host: pongraczfarkas-2
 mysql_database: agama
 mysql_user: agama
+backup_user: agama
+replication: replication
+
+node_id: "{{ (ansible_port / 100) | int }}"
 mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           34306665313338353464613730666232646466356266393533386262393063393665663133653766
@@ -25,17 +29,20 @@ grafana_password: !vault |
           3932373336396264660a336662386233393935396562656364643561386665333064623536313963
           6134
           
-route:
+forwarders:
   - 1.1.1.1
   - 8.8.8.8
   - 9.9.9.9
   - 9.9.9.10
   
-allowed:
+localnw:
  - 192.168.42.0/24;
  - 127.0.0.0/8;
  
 startup: db.worldismine
+backup : 192.168.42.132
+backup_ssh: pongraczfarkas@backup
+backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
 
 rsyslog_server: pongraczfarkas-2
 
@@ -47,3 +54,29 @@ pinger_targets:
 influx_database: latency
 
 port_pinger: 8086
+
+prometheus_jobs:
+  - name: linux
+    target_port: 9100
+    target_group: all
+  - name: bind9
+    target_port: 9119
+    target_group: dns_server
+  - name: mysql
+    target_port: 9104
+    target_group: db_servers
+  - name: nginx-exporter
+    target_port: 9113
+    target_group: web_servers
+  - name: influxdb_exporter
+    target_port: 9424
+    target_group: influx_telegrapf
+
+reverse_proxy:
+  - name: prometheus
+    port: 9090
+    location: /prometheus
+  - name: grafana
+    port: 3000
+    location: /grafana
+    extra : proxy_set_header Host $http_host;

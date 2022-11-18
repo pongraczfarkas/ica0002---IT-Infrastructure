@@ -1,29 +1,43 @@
-- name: Linux user pinger
-  ansible.builtin.user:
+- name: Add user pinger
+  user:
     name: pinger
 
-- name: Install fping
+
+- name: Install 'fping'
   apt:
     name: fping
 
-- name: Create a directory if it does not exist
-  ansible.builtin.file:
-    path: /etc/pinger
+- name: Creates path
+  file:
+    path: "{{item}}"
     state: directory
-    mode: '0755'
+    mode: 0777
+  loop:
+    - /etc/pinger
 
-- template:
-   src: pinger.conf
-   dest: /etc/pinger/pinger.conf
+- name: Copy pinger.sh
+  copy:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: pinger
+    group: pinger
+    mode: 0777
+  loop:
+    - src: pinger.sh
+      dest: /usr/local/bin/pinger.sh
+    - src: pinger.service
+      dest: /etc/systemd/system/pinger.service
 
-- template:
-   src: pinger.sh
-   dest: /usr/local/bin/pinger
-   mode: '0755'
+- name: Copy pinger.conf.j2 template into /etc/pinger/pinger.conf
+  template:
+    src: pinger.conf.j2
+    dest: /etc/pinger/pinger.conf
+  notify:
+    - Reload daemons
+    - Restart pinger
 
-- template:
-    src: pinger.service
-    dest: /etc/systemd/system/pinger.service
-  notify: 
-      - Systemd reload
-      - Start service pinger
+- name: Ensure pinger is running
+  service:
+    name: pinger
+    state: started
+    enabled: true

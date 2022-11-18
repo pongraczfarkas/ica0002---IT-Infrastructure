@@ -1,53 +1,67 @@
-- name: Install mysql
+- name: Install 'python3-mysql'
+  apt:
+    name: python3-pymysql
+
+- name: Install 'mysql-server'
   apt:
     name: mysql-server
+    #update_cache: yes
   notify: Restart mysql
 
-- name: Copy override config to overwrite bind address
-  ansible.builtin.copy:
-    src: override.cnf
+- name: Copy the mysql config file and restart mysql server
+  template:
+    src: mysqld.cnf.j2
     dest: /etc/mysql/mysql.conf.d/override.cnf
-    mode: '0644'
+    mode: 0644
   notify: Restart mysql
-
-- name: Instal python3 for mysql
-  apt:
-   name: python3-pymysql
 
 - name: MySQL database
   community.mysql.mysql_db:
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-
-# - name: MySQL database
- # community.mysql.mysql_db:
-#    name: "{{ mysql_database }}"
-
-
-- name: MySQL user
+- name: MySQL user {{ mysql_password }}
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    #- Make replication read only
+    - Reset MySQL source
 
 
-- template:
-   src: resolv.conf.j2
-   dest: /etc/resolv.conf
+- name: Create MySQL replication user
+  mysql_user:
+    name: "{{ replication }}"
+    password: "{{ mysql_password }}"
+    priv: "*.*:REPLICATION SLAVE"
+    host: "%"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true
 
-- name: Stop service systemd-resolved
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: stopped
-    enabled: no
+- name: Make replication read only
+  mysql_variables:
+    variable: read_only
+    value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+    mode: persist
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify:
+    - Reset MySQL source
+    - Reset MySQL replica
 
-- name: Create user exporter
-  community.mysql.mysql_user:
-   name: exporter
-   password: "{{ mysql_exporter_pass }}"
-   priv:
-    '*.*': 'PROCESS,REPLICATION CLIENT,SELECT'
-   login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+
+
+
+
+- name: Start mysql server
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+  notify: Restart mysql
+

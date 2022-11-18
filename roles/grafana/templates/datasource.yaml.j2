@@ -12,3 +12,20 @@ datasources:
    isDefault: true
    editable: true
 
+ - name: InfluxDB
+   type: influxdb
+#   orgId: 1
+   url: http://{{groups['influx_telegrapf'][0]}}:8086
+   password:
+   user:
+   database: latency
+   editable: true
+
+ - name: InfluxDB-telegraf
+   type: influxdb
+#   orgId: 1
+   url: http://{{groups['influx_telegrapf'][0]}}:8086
+   password:
+   user:
+   database: telegraf
+   editable: true

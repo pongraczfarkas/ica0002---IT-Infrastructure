@@ -1,74 +1,69 @@
-- name: Install required packages
-  apt:
-    name:
-    - apt-transport-https
-    - software-properties-common
-   
 - name: Update CA certificates
-  apt:
+  ansible.builtin.apt:
     name: ca-certificates>=20211000*
 
 - name: Add grafana gpg key
   get_url: 
     url: https://packages.grafana.com/gpg.key
     dest: /usr/share/keyrings/grafana.key
-  
+    
 - name: Add grafana repo
   apt_repository:
     repo: deb [signed-by=/usr/share/keyrings/grafana.key] https://packages.grafana.com/oss/deb stable main
     state: present
-
+    
 - name: Install 'grafana'
   apt: 
     name: grafana=8.1.7
     allow_downgrade: yes
 
 
-- name: Create a directory if it does not exist
-  ansible.builtin.file:
+- name: Copy grafana.ini.j2 to /etc/grafana/grafana.ini / reconfigure grafana
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+  notify: Restart grafana
+
+
+- name: Sleep for 10 seconds and continue with play
+  wait_for:
+    timeout: 10 
+
+- name: Start grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+
+
+- name: Copy datasource.yaml to /etc/grafana/provisioning/datasources/
+  template:
+    src: datasource.yaml.j2
+    dest: /etc/grafana/provisioning/datasources/datasource.yaml
+  notify: Restart grafana
+
+
+- name: Copy dashboard.yaml to /etc/grafana/provisioning/dashboards/
+  template:
+    src: dashboard.yaml
+    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
+  notify: Restart grafana
+
+
+- name: Create directory for dashboard?
+  file:
     path: /var/lib/grafana/dashboards
     state: directory
-    mode: '0755'
+    mode: 0755
 
-- template:
-   src: grafana.ini.j2
-   dest: /etc/grafana/grafana.ini
-  notify: Restart grafana
-
-- name: Copy main.json to dasboards
+- name: Copy main.json to /var/lib/grafana/dashboards
   copy:
-    src: main.json
-    dest: /var/lib/grafana/dashboards/main.json
-    
-- name: Copy syslog.json to dasboards
-  copy:
-    src: syslog.json
-    dest: /var/lib/grafana/dashboards/syslog.json
+    src: "{{item}}.json"
+    dest: "/var/lib/grafana/dashboards/{{item}}.json"
   notify: Restart grafana
-
-- name: Set grafana password
-  ansible.builtin.shell: grafana-cli --homepath "/usr/share/grafana" admin reset-admin-password {{ grafana_password }}
-  notify: Restart grafana
-
-
-
-- name: Import Grafana dashboard main
-  community.grafana.grafana_dashboard:
-        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
-        state: present
-        overwrite: yes
-        grafana_user: "admin"
-        grafana_password: "{{ grafana_password }}"
-        path: /var/lib/grafana/dashboards/main.json
-  notify: Restart grafana
-
-- name: Import Grafana dashboard syslog
-  community.grafana.grafana_dashboard:
-        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
-        state: present
-        overwrite: yes
-        grafana_user: "admin"
-        grafana_password: "{{ grafana_password }}"
-        path: /var/lib/grafana/dashboards/syslog.json
-  notify: Restart grafana
-
+  loop:
+    - main
+    - latency
+    - syslog
+    - mysql
