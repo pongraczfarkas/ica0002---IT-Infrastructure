@@ -1,12 +1,20 @@
-acl lan {192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8;};
+acl lan {192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; };
 options {
 	directory "/var/cache/bind";
-    forwarders {
-       {% for i in forwarders -%}
-       {{i}};
-       {%endfor%}};
-    allow-query {
-        lan;
-    };
-        dnssec-validation no;
+
+	forwarders {
+                {% for r in route -%}
+                {{r}};
+                {%endfor%}
+         };
+	allow-query {
+	   lan;
+	};
+
+	dnssec-validation no;
+
+};
+
+statistics-channels {
+	inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
 };

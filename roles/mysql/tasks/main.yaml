@@ -1,41 +1,40 @@
-- name: Install MySQL server
-  ansible.builtin.apt:
+- name: Install mysql
+  apt:
     name: mysql-server
-  notify: Restart MySQL
-  
-- name: Override mysql configfile and restart
+  notify: Restart mysql
+
+- name: Copy override config to overwrite bind address
   ansible.builtin.copy:
     src: override.cnf
     dest: /etc/mysql/mysql.conf.d/override.cnf
-    mode: 0644
-  notify: Restart MySQL
-  
-- name: Install 'python3-pymysql'
-  ansible.builtin.apt:
-    name: python3-pymysql
-    
+    mode: '0644'
+  notify: Restart mysql
+
+- name: Instal python3 for mysql
+  apt:
+   name: python3-pymysql
+
 - name: MySQL database
   community.mysql.mysql_db:
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
-    
-- name: Create MySQL user
+
+
+# - name: MySQL database
+ # community.mysql.mysql_db:
+#    name: "{{ mysql_database }}"
+
+
+- name: MySQL user
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
-    
-- name: Start mysql server
-  ansible.builtin.service:
-    name: mysql
-    state: started
-    enabled: yes
-  become: yes
-  
-- name: Resolv.conf to vm2 
-  ansible.builtin.template:
+
+
+- template:
    src: resolv.conf.j2
    dest: /etc/resolv.conf
 
@@ -44,3 +43,11 @@
     name: systemd-resolved
     state: stopped
     enabled: no
+
+- name: Create user exporter
+  community.mysql.mysql_user:
+   name: exporter
+   password: "{{ mysql_exporter_pass }}"
+   priv:
+    '*.*': 'PROCESS,REPLICATION CLIENT,SELECT'
+   login_unix_socket: /var/run/mysqld/mysqld.sock
