@@ -36,3 +36,14 @@ allowed:
  - 127.0.0.0/8;
  
 startup: db.worldismine
+
+rsyslog_server: pongraczfarkas-2
+
+pinger_targets:
+  - google.com
+  - twitter.com
+  - cloudflare.com
+
+influx_database: latency
+
+port_pinger: 8086

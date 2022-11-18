@@ -1,0 +1,18 @@
+- name: Apt update
+  apt:
+    update_cache: yes
+
+- name: Start service influxdb
+  ansible.builtin.service:
+    name: influxdb
+    state: started
+
+- name: Start service telegraf
+  service:
+    name: telegraf
+    state: started
+
+- name: Restart telegraf
+  service:
+   name: telegraf
+   state: restarted

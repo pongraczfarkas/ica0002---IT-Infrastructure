@@ -39,8 +39,12 @@
   copy:
     src: main.json
     dest: /var/lib/grafana/dashboards/main.json
-
-
+    
+- name: Copy syslog.json to dasboards
+  copy:
+    src: syslog.json
+    dest: /var/lib/grafana/dashboards/syslog.json
+  notify: Restart grafana
 
 - name: Set grafana password
   ansible.builtin.shell: grafana-cli --homepath "/usr/share/grafana" admin reset-admin-password {{ grafana_password }}
@@ -56,5 +60,15 @@
         grafana_user: "admin"
         grafana_password: "{{ grafana_password }}"
         path: /var/lib/grafana/dashboards/main.json
+  notify: Restart grafana
+
+- name: Import Grafana dashboard syslog
+  community.grafana.grafana_dashboard:
+        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
+        state: present
+        overwrite: yes
+        grafana_user: "admin"
+        grafana_password: "{{ grafana_password }}"
+        path: /var/lib/grafana/dashboards/syslog.json
   notify: Restart grafana
 

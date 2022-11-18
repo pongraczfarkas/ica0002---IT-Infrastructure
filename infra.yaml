@@ -21,7 +21,6 @@
 
 - name: Prometheus
   hosts: prometheus
-  #gather_facts: no
   become: yes
   roles:
     - prometheus
@@ -37,12 +36,9 @@
 
 - name: Node
   hosts: all
-  #gather_facts: no
   become: yes
   roles:
     - node_exporter
-
-
 
 - name: Ansible webservers LAB2
   hosts: web_servers
@@ -51,7 +47,6 @@
     - users
     - agama
     - uwsgi
-    #- nginx
 
 - name: nginx
   hosts: all
@@ -69,3 +64,19 @@
     - grafana
   tags:
    - g
+   
+- name: InfluxDB
+  hosts: influxdb
+  become: yes
+  roles:
+    - influxdb
+    - pinger
+    - influxdb_exporter
+    
+- name: Rsyslog
+  hosts: all
+  become: yes
+  roles:
+    - rsyslog
+  tags:
+    - r
