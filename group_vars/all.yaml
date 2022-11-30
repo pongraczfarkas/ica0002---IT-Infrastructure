@@ -2,6 +2,7 @@ mysql_host: pongraczfarkas-2
 mysql_database: agama
 mysql_user: agama
 backup_user: agama
+agama_port: 8001
 replication: replication
 
 node_id: "{{ (ansible_port / 100) | int }}"
@@ -37,10 +38,12 @@ forwarders:
   
 localnw:
  - 192.168.42.0/24;
+ - 192.168.43.0/24;
  - 127.0.0.0/8;
+ - 172.17.0.0/16
  
 startup: db.worldismine
-backup : 192.168.42.132
+backup: 192.168.42.132
 backup_ssh: pongraczfarkas@backup
 backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
 
@@ -77,6 +80,7 @@ reverse_proxy:
     port: 9090
     location: /prometheus
   - name: grafana
-    port: 3000
+    port: 3001
     location: /grafana
     extra : proxy_set_header Host $http_host;
+ 

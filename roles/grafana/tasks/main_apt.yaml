@@ -1,0 +1,69 @@
+- name: Update CA certificates
+  ansible.builtin.apt:
+    name: ca-certificates>=20211000*
+
+- name: Add grafana gpg key
+  get_url: 
+    url: https://packages.grafana.com/gpg.key
+    dest: /usr/share/keyrings/grafana.key
+    
+- name: Add grafana repo
+  apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/grafana.key] https://packages.grafana.com/oss/deb stable main
+    state: present
+    
+- name: Install 'grafana'
+  apt: 
+    name: grafana=8.1.7
+    allow_downgrade: yes
+
+
+- name: Copy grafana.ini.j2 to /etc/grafana/grafana.ini / reconfigure grafana
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+  notify: Restart grafana
+
+
+- name: Sleep for 10 seconds and continue with play
+  wait_for:
+    timeout: 10 
+
+- name: Start grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+
+
+- name: Copy datasource.yaml to /etc/grafana/provisioning/datasources/
+  template:
+    src: datasource.yaml.j2
+    dest: /etc/grafana/provisioning/datasources/datasource.yaml
+  notify: Restart grafana
+
+
+- name: Copy dashboard.yaml to /etc/grafana/provisioning/dashboards/
+  template:
+    src: dashboard.yaml
+    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
+  notify: Restart grafana
+
+
+- name: Create directory for dashboard?
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    mode: 0755
+
+- name: Copy main.json to /var/lib/grafana/dashboards
+  copy:
+    src: "{{item}}.json"
+    dest: "/var/lib/grafana/dashboards/{{item}}.json"
+  notify: Restart grafana
+  loop:
+    - main
+    - latency
+    - syslog
+    - mysql

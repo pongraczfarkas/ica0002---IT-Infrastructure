@@ -23,6 +23,15 @@
       - bind 
     tags:
       - dns
+      
+  - name: Docker
+    hosts: docker
+    gather_facts: no
+    become: yes
+    roles:
+      - docker
+    tags:
+      -d    
 
   - name : add dns server to all host 
     hosts : all

@@ -1,5 +1,5 @@
 
-acl lan { 192.168.42.0/24; 192.168.43.0/24; 127.0.0.0/8; };
+acl lan { {%- for n in localnw %}{{ n }}{% endfor %} };
 options {
         directory "/var/lib/bind";
 
