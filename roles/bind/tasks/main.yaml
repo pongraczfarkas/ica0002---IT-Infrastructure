@@ -3,18 +3,18 @@
     name: bind9
     #state: latest
    # update_cache: yes
+   
+- name: Ensure bind9 is running
+  ansible.builtin.service:
+    name: bind9
+    state: started
 
 - template:
    src: named.conf.options.j2
    dest: /etc/bind/named.conf.options
   notify:
      Restart bind9
-
-- template:
-   src: db.worldismine
-   dest: /var/cache/bind/{{ startup }}
-  notify: rndc reload
-
+     
 - template:
    src: named.conf.local.j2
    dest: /etc/bind/named.conf.local
@@ -22,14 +22,8 @@
      Restart bind9
 
 - template:
-   src: resolv.conf.j2
-   dest: /etc/resolv.conf
-  notify: rndc reload
-
-- name: Copy /run/systemd/resolve/resolv.conf for docker
-  ansible.builtin.template:
-   src: resolv.conf.j2
-   dest: /run/systemd/resolve/resolv.conf
+   src: db.worldismine
+   dest: /var/lib/bind/{{ startup }}
   notify: rndc reload
   
 - name: Stop service systemd-resolved

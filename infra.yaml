@@ -9,7 +9,7 @@
 
   - name: init
     hosts: web_servers, db_servers
-    become: 1
+    become: yes
     roles:
       - init
     tags:
@@ -18,28 +18,28 @@
   - name : bind
     hosts : dns_server
     gather_facts: yes
-    become: 1
+    become: yes
     roles:
       - bind 
     tags:
-      - dns
-      
-  - name: Docker
-    hosts: docker
-    gather_facts: no
-    become: yes
-    roles:
-      - docker
-    tags:
-      -d    
+      - dns  
 
   - name : add dns server to all host 
     hosts : all
-    become: 1
+    become: yes
     roles:
         - dns
     tags:
       - dns2
+      
+  - name : bind_exporter 
+    hosts : dns_server
+    gather_facts: yes
+    become: yes
+    roles:
+      - bind_exporter 
+    tags:
+      - bind_exporter 
 
   - name: Database servers
     hosts: db_servers
@@ -50,38 +50,34 @@
       - mysql_exporter 
     tags:
       - db
- 
-
 
   - name: web_app
     hosts: web_servers
     become: yes
     roles:
+      - docker
       - agama
       - uwsgi
-      - nginx
     tags:
       - ws
+      
+  - name: reverse proxy
+    hosts: all
+    become: yes
+    roles:
+      - nginx
+      - nginx_exporter
+    tags:
+      - rev
 
-  - name: vm2 exporters
-    hosts: vm2_exporters
+  - name: vm exporters
+    hosts: all
     gather_facts: yes
     become: yes
     roles:
       - node_exporter 
-      - bind_exporter 
     tags:
-      - vm2Exp
-
-  - name: vm1 exporters
-    hosts: vm1_exporters
-    gather_facts: yes
-    become: yes
-    roles:
-      - node_exporter 
-      - nginx_exporter 
-    tags:
-      - vm1Exp
+      - vmexp
 
 
   - name: prometeus
@@ -125,9 +121,10 @@
     hosts: grafana
     become: yes
     roles:
+      - docker
       - grafana
     tags:
-      - graf
+      - graf 
 
   - name: backup
     hosts: backup

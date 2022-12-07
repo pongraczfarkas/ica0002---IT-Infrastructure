@@ -8,6 +8,12 @@
     url: https://raw.githubusercontent.com/hudolejev/agama/master/Dockerfile
     dest: /opt/agama/Dockerfile
     #mode: "0755"
+    
+- name: Download agama.py
+  get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
+    dest: /opt/agama/agama.py
+    mode: 0644
 
 - name: Create agama docker image
   community.docker.docker_image:
@@ -15,6 +21,7 @@
     source: build
     build:
       path: /opt/agama
+      
 
 - name: Agama docker container
   community.docker.docker_container:

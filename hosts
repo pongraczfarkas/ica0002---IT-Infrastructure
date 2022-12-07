@@ -1,5 +1,5 @@
-pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=13722 ansible_user=ubuntu
-pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=16722 ansible_user=ubuntu
+pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=16422 ansible_user=ubuntu
+pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=12522 ansible_user=ubuntu
 
 
 [db_servers]
@@ -15,12 +15,6 @@ pongraczfarkas-1
 [prometheus]
 pongraczfarkas-2
 
-[vm2_exporters]
-pongraczfarkas-2
-
-[vm1_exporters]
-pongraczfarkas-1
-
 [grafana]
 pongraczfarkas-2
 
@@ -35,9 +29,5 @@ pongraczfarkas-1
 pongraczfarkas-2
 
 [backup]
-pongraczfarkas-1
-pongraczfarkas-2
-
-[docker]
 pongraczfarkas-1
 pongraczfarkas-2

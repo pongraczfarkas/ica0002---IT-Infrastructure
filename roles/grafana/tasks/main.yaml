@@ -15,7 +15,7 @@
 
 - name: Copy datasource.yaml
   template:
-    src: datasource.yaml
+    src: datasource.yaml.j2
     dest: /opt/grafana/provisioning/datasources/datasource.yaml
   notify: Restart docker grafana
 
@@ -38,7 +38,7 @@
   community.docker.docker_container:
     name: grafana
     image: grafana/grafana
-    published_ports: "{{ grafana_port }}:3000"
+    published_ports: "{{ reverse_proxy[1]['port'] }}:3000"
     volumes: /opt/grafana:/etc/grafana
     restart_policy: always
     container_default_behavior: no_defaults

@@ -1,12 +1,18 @@
 - name: Install duplicity
   apt:
     name: duplicity
+    
+- name: Add the user agama
+  user:
+    name: agama
+    system: yes
+    state: present
 
 - name: Create the backup directory for influxdb
   file:
     path: /home/backup/influxdb
     state: directory
-    mode: 0744
+    mode: 0777
     owner: "{{ backup_user }}"
     group: influxdb
 
