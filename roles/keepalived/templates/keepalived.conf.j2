@@ -1,0 +1,32 @@
+vrrp_script check_haproxy {                 
+    script "/usr/local/bin/ha88" 
+    weight 51                             
+    interval 1
+}
+
+vrrp_instance agama {
+    interface {{ keepalived_interface }}
+    virtual_router_id {{ keepalived_virtual_id }}
+    priority {{ 100 if inventory_hostname == agama_host else 50 }}
+    advert_int 1                            
+    virtual_ipaddress {
+{% if '42' ==(hostvars[agama_host]['ansible_default_ipv4']['address'] | split('.'))[2] %}                   
+        192.168.100.{{ (hostvars[agama_host]['ansible_default_ipv4']['address'] | split('.'))[3] }}/24
+    }
+{% else %} 
+        192.168.101.{{ (hostvars[agama_host]['ansible_default_ipv4']['address'] | split('.'))[3] }}/24
+    }
+{% endif %}
+    unicast_peer {
+        {% for vm in groups['keepalived'] %}
+        {% if vm != inventory_hostname %}
+        {{ hostvars[vm]['ansible_default_ipv4']['address'] }}
+        {% endif %}
+        {% endfor %}
+    }
+
+    track_script {
+        check_haproxy
+    }
+
+}
