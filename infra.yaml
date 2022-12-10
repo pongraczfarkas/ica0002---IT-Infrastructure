@@ -8,7 +8,7 @@
       - se  
 
   - name: init
-    hosts: web_servers, db_servers
+    hosts: all
     become: yes
     roles:
       - init
@@ -16,24 +16,24 @@
       - up
 
   - name : bind
-    hosts : dns_server
+    hosts : all
     gather_facts: yes
     become: yes
     roles:
       - bind 
     tags:
-      - dns  
+      - bind
 
   - name : add dns server to all host 
     hosts : all
     become: yes
     roles:
-        - dns
+      - dns
     tags:
-      - dns2
-      
+      - dns
+
   - name : bind_exporter 
-    hosts : dns_server
+    hosts : all
     gather_facts: yes
     become: yes
     roles:
@@ -43,13 +43,22 @@
 
   - name: Database servers
     hosts: db_servers
-    become: 1
+    become: yes
     roles:
       - mysql
       - mysql_backup
       - mysql_exporter 
     tags:
       - db
+ 
+  - name: Database handler
+    hosts: db_servers
+    become: yes
+    roles:
+      - mysql_helper
+    tags:
+      - db_helper
+
 
   - name: web_app
     hosts: web_servers
@@ -60,15 +69,15 @@
       - uwsgi
     tags:
       - ws
-      
-  - name: reverse proxy
+
+  - name: reverse_proxy
     hosts: all
     become: yes
     roles:
       - nginx
-      - nginx_exporter
+      - nginx_exporter 
     tags:
-      - rev
+      - reverse_proxy
 
   - name: vm exporters
     hosts: all
@@ -77,19 +86,19 @@
     roles:
       - node_exporter 
     tags:
-      - vmexp
+      - vmExp
 
-
-  - name: prometeus
+  - name: prometheus
     hosts: prometheus
     become: yes
+    gather_facts: yes
     roles:
       - prometheus
     tags:
       - prom
 
   - name: Install InfluxDB and Telegraf
-    hosts: influx_telegrapf
+    hosts: influx_telegraf
     gather_facts: no
     become: yes
     roles:
@@ -120,11 +129,12 @@
   - name: grafana
     hosts: grafana
     become: yes
+    gather_facts: yes
     roles:
       - docker
       - grafana
     tags:
-      - graf 
+      - graf
 
   - name: backup
     hosts: backup
@@ -133,6 +143,27 @@
       - backup
     tags:
       - backup
+
+  - name: Keepalived
+    hosts: keepalived
+    gather_facts: yes
+    become: yes
+    roles:
+      - keepalived
+      - keepalived_exporter
+    tags:
+      - keepalived
+      
+  - name: haproxy
+    hosts: haproxy
+    gather_facts: yes
+    become: yes
+    roles:
+      - haproxy
+      - haproxy_exporter
+    tags:
+      - haproxy
+      
 
 
 

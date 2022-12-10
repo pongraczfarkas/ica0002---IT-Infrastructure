@@ -7,9 +7,10 @@
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
 
-- template:
+- name: Uploads /home/backup/.ssh/known_host
+  template:
     dest: /home/backup/.ssh/known_hosts
     src: known_hosts.j2
-    owner: backup
-    group: backup
-    mode: 0777
+    owner: root
+    group: root
+    mode: 0644

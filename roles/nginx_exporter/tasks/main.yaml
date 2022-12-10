@@ -7,7 +7,7 @@
     src: exporter.j2
     dest: /etc/nginx/sites-enabled/exporter
   notify: 
-    - Restart nginx # reload systemd is not enough
+    - Restart nginx
     - Reload systemd
     - Restart nginx exporter
 

@@ -1,4 +1,3 @@
-
 - name: Restart mysql
   service:
     name: mysql
@@ -9,3 +8,15 @@
   service:
     name:  prometheus-mysqld-exporter
     state: restarted
+
+
+- name: zed
+  community.mysql.mysql_query:
+    login_db: "{{ mysql_user }}"
+    query: "{{ item }}"
+    login_unix_socket: /run/mysqld/mysqld.sock
+  loop:
+    - stop slave;
+    - reset slave;
+    - start slave;
+  when: inventory_hostname != mysql_host

@@ -5,7 +5,6 @@
 - name: Install 'mysql-server'
   apt:
     name: mysql-server
-    #update_cache: yes
   notify: Restart mysql
 
 - name: Copy the mysql config file and restart mysql server
@@ -20,7 +19,7 @@
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: MySQL user {{ mysql_password }}
+- name: MySQL user 
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
@@ -28,9 +27,7 @@
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
   notify:
-    #- Make replication read only
     - Reset MySQL source
-
 
 - name: Create MySQL replication user
   mysql_user:
@@ -51,17 +48,11 @@
     - Reset MySQL source
     - Reset MySQL replica
 
-
-
-
-
-
-
 - name: Start mysql server
   service:
     name: mysql
     state: started
     enabled: yes
   become: yes
-  notify: Restart mysql
-
+  notify: 
+    - Restart mysql 

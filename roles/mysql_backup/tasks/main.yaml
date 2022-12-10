@@ -2,13 +2,6 @@
   apt:
     name: duplicity
 
-
-- name: Create the backup directory for mysql
-  file:
-    path: /home/backup/mysql
-    state: directory
-    mode: 0777
-
 - name: Create MySQL backup user
   mysql_user:
     name: "{{ backup_user }}"
@@ -17,6 +10,16 @@
     host: "localhost"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
+- name: Create two necessary directories for backup
+  file:
+    path: '{{ item }}'
+    recurse: yes
+    state: directory
+    mode: 0777
+    owner: backup
+  loop:
+    - /home/backup/restore
+    - /home/backup/mysql
 
 - name: Copy MySQL configuration file
   template:
@@ -25,7 +28,6 @@
     owner: backup
     group: backup
     mode: 0700
-
 
 - name: Copy mysql cron
   template:

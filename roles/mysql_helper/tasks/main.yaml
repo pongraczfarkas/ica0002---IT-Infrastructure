@@ -1,0 +1,10 @@
+- name: mysql execute query
+  community.mysql.mysql_query:
+    login_db: "{{ mysql_user }}"
+    query: "{{ item }}"
+    login_unix_socket: /run/mysqld/mysqld.sock
+  loop:
+    - stop slave;
+    - reset slave;
+    - start slave;
+  when: inventory_hostname != mysql_host

@@ -1,25 +1,28 @@
-pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=16422 ansible_user=ubuntu
-pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=12522 ansible_user=ubuntu
+pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=10722 ansible_user=ubuntu 
+pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=6422 ansible_user=ubuntu 
+pongraczfarkas-3 ansible_host=193.40.156.67 ansible_port=11722 ansible_user=ubuntu 
 
 
 [db_servers]
-pongraczfarkas-2
 pongraczfarkas-1
-
-[dns_server]
 pongraczfarkas-2
+
+[docker]
+pongraczfarkas-1
+pongraczfarkas-3
 
 [web_servers]
 pongraczfarkas-1
+pongraczfarkas-2
 
 [prometheus]
-pongraczfarkas-2
+pongraczfarkas-3
 
 [grafana]
-pongraczfarkas-2
+pongraczfarkas-3
 
-[influx_telegrapf]
-pongraczfarkas-1
+[influx_telegraf]
+pongraczfarkas-3
 
 [pinger]
 pongraczfarkas-1
@@ -31,3 +34,15 @@ pongraczfarkas-2
 [backup]
 pongraczfarkas-1
 pongraczfarkas-2
+
+[keepalived]
+pongraczfarkas-1
+pongraczfarkas-2
+
+[haproxy]
+pongraczfarkas-1
+pongraczfarkas-2
+
+
+
+

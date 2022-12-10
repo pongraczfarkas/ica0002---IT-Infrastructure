@@ -4,6 +4,16 @@
       - python3-docker
       - docker.io
 
+- name: create folder
+  file:
+    path: /etc/docker
+    state: directory
+
+- name: copy dns
+  template:
+    src: "daemon.json"
+    dest: "/etc/docker/daemon.json"
+
 - name: Ensure docker is running
   service:
     name: docker

@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 
 # Script contains several (more than 1) security issues.

@@ -1,11 +1,21 @@
-mysql_host: pongraczfarkas-2
+mysql_host: pongraczfarkas-1
+agama_db: pongraczfarkas-1
+agama_host: pongraczfarkas-1
+master_dns: pongraczfarkas-3
+mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 mysql_database: agama
 mysql_user: agama
 backup_user: agama
-agama_port: 8001
 replication: replication
+defaultNginxPort: 8001
+keepalived_interface: ens3
+keepalived_virtual_id: 13
+agama_container_per_vm: 2
+agama_container_prefix_port: 1028
+
 
 node_id: "{{ (ansible_port / 100) | int }}"
+
 mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           34306665313338353464613730666232646466356266393533386262393063393665663133653766
@@ -30,6 +40,33 @@ grafana_password: !vault |
           3932373336396264660a336662386233393935396562656364643561386665333064623536313963
           6134
           
+dns_update_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36323333666538393164613331656664396134323037626139636262653465613862363834626438
+          3730363933313765336532643032383363313633663333360a363561383435333561323337303466
+          66343939613835373962633638303433356136666137356437663936646237303434656434656435
+          6633343336636436390a366330653233636666363635303838376161303061366162353838386434
+          35613962326463666637623231616130613761616639383938616234626435633838303635356630
+          6331303966633730623435393066386132626233653131666534
+          
+dns_transfer_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63313964346664343562356464653439363238366265666430316230663535333061306537653630
+          3939656332323439346466633431613831333162353766640a653930633561633730396431663336
+          63373963386335636335636664306632346637383931383662383836633234666334656439666563
+          3038323762653430660a626533393138323463663533396533646563336461373230363766303939
+          30653230323636323962333663396536326363633133346137383365373233633461363661323133
+          3635323138666162333466633764313362386166643038373335
+          
+dns_pass : !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30633939626362343832663361343437396437623061623065376536353934326365323337326435
+          3331363435356632646133653832613530366332303534630a663664303334323731363335376634
+          35666564323963613965346561643465343639326663386633363765396163363334373532353135
+          3037333437316130640a653065366236343961613061306233363535643666343834363934643733
+          39313966396537666130623039333636323139643863626330303464393139366439613234373664
+          3437363961313130316535366265306139336131313835316630
+          
 forwarders:
   - 1.1.1.1
   - 8.8.8.8
@@ -37,26 +74,33 @@ forwarders:
   - 9.9.9.10
   
 localnw:
- - 192.168.42.0/24;
- - 192.168.43.0/24;
- - 127.0.0.0/8;
- - 172.0.0.0/8;
+ - 192.168.42.0/42;
+ - 192.168.43.0/42;
+ - 127.0.0.1/8;
  
-startup: db.worldismine
+dns_a_records:
+  cloudflare: 1.1.1.1
+  google: 8.8.8.8
+  google2: 8.8.4.4
+  backup: 192.168.42.132
+  
+dns_cname_records:
+  grafana: "{{ groups['grafana'][0] }}"
+  influxdb: "{{ groups['influx_telegrapf'][0] }}"
+  prometheus: "{{ groups['prometheus'][0] }}"
+  web1: "{{ groups['web_servers'][0] }}"
+  web2: "{{ groups['web_servers'][1] }}"
+  lb1: "{{ groups['web_servers'][0] }}"
+  lb2: "{{ groups['web_servers'][1] }}"
+  mysql1: "{{ groups['db_servers'][0] }}"
+  mysql2: "{{ groups['db_servers'][1] }}"
+  ns1: pongraczfarkas-1
+  ns2: pongraczfarkas-2
+ 
+startup: farkas.fp
 backup: 192.168.42.132
 backup_ssh: pongraczfarkas@backup
 backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
-
-rsyslog_server: pongraczfarkas-2
-
-pinger_targets:
-  - google.com
-  - twitter.com
-  - cloudflare.com
-
-influx_database: latency
-
-port_pinger: 8086
 
 prometheus_jobs:
   - name: linux
@@ -73,7 +117,13 @@ prometheus_jobs:
     target_group: web_servers
   - name: influxdb_exporter
     target_port: 9424
-    target_group: influx_telegrapf
+    target_group: influx_telegraf
+  - name: haproxy_exporter
+    target_port: 9101
+    target_group: haproxy
+  - name: keepalived
+    target_port: 9165
+    target_group: keepalived
 
 reverse_proxy:
   - name: prometheus
@@ -83,4 +133,9 @@ reverse_proxy:
     port: 3001
     location: /grafana
     extra : proxy_set_header Host $http_host;
- 
+  - name: haproxy
+    domain: haproxy
+    port: 88
+    location: /
+    extra : proxy_set_header Host $http_host;
+

@@ -4,13 +4,6 @@
     state: latest
     update_cache: yes
 
-- name: Copy Nginx configuration
-  copy:
-    src: default
-    dest: /etc/nginx/sites-enabled/default
-  notify: Restart nginx
-
-
 - name: Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports
   template:
     src: default.j2

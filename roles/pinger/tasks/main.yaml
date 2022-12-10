@@ -2,7 +2,6 @@
   user:
     name: pinger
 
-
 - name: Install 'fping'
   apt:
     name: fping

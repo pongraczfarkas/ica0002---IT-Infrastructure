@@ -1,22 +1,20 @@
-
-
 server {
 
 	listen 80 default_server;
 	server_name _;
 
-	location / {
-		uwsgi_pass localhost:5000;
-		include uwsgi_params;
-	}
 {% for sites in reverse_proxy %}
 	location {{sites['location']}} {
 {% if 'extra' in sites %}
 		{{sites['extra']}}
 {% endif %}
+{% if 'domain' in sites %}
+		proxy_pass http://{{sites['domain']}}:{{sites['port']}};
+{% else %}
 		proxy_pass http://{{groups[sites['name']][0]}}:{{sites['port']}};
+{% endif %}
 	}
+
 {% endfor %}	
 
-	
 }

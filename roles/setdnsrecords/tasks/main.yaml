@@ -1,0 +1,27 @@
+- name: Set A records
+  when: inventory_hostname == master_dns
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_pass }}"
+    server: "localhost"
+    zone: "{{ domain }}"
+    record: "{{ item.key }}"
+    type: "A"
+    value: "{{ item.value }}"
+  loop: "{{ dns_a_records | dict2items }}"
+  #run_once: True
+  
+- name: Set CNAME records
+  when: inventory_hostname == master_dns
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_pass }}"
+    server: "localhost"
+    zone: "{{ domain }}"
+    record: "{{ item.key }}"
+    type: "CNAME"
+    value: "{{ item.value }}"
+  loop: "{{ dns_cname_records | dict2items }}"
+  #run_once: True

@@ -8,8 +8,6 @@
    dest: /etc/prometheus/prometheus.yml
   notify: Restart prometheus
 
-
-
 - name: Copy prometheus.j2 template
   template:
    src: prometheus.j2

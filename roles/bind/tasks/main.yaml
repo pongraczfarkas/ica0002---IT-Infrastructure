@@ -1,38 +1,77 @@
 - name: Install bind9
   apt:
     name: bind9
-    #state: latest
-   # update_cache: yes
-   
-- name: Ensure bind9 is running
-  ansible.builtin.service:
-    name: bind9
-    state: started
-
-- template:
-   src: named.conf.options.j2
-   dest: /etc/bind/named.conf.options
+    
+- name: Install python-dnspython
+  apt:
+    name: python3-dnspython
+    
+- name: Upload db.domain.j2
+  template:
+    dest: /var/lib/bind/db.{{startup}}
+    src: db.farkas.fp.j2
+    mode: 0777
+  notify: rndc reload
+  when: inventory_hostname == master_dns
+  
+- name: Upload db.domain.reverse.j2 
+  template: 
+    src: db.farkas.fp.reverse.j2
+    dest: /var/lib/bind/db.{{ startup }}.reverse
+    force: no   
+  when: inventory_hostname == master_dns
   notify:
-     Restart bind9
+    - rndc reload 
      
 - template:
-   src: named.conf.local.j2
-   dest: /etc/bind/named.conf.local
-  notify:
-     Restart bind9
+    dest: /etc/bind/named.conf.local
+    src: named.conf.local.j2
+  notify: Restart bind9
+  register: isChanged
 
 - template:
-   src: db.worldismine
-   dest: /var/lib/bind/{{ startup }}
-  notify: rndc reload
-  
-- name: Stop service systemd-resolved
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: stopped
-    enabled: no
+    dest: /etc/bind/named.conf.options
+    src: named.conf.options.j2
+  notify: Restart bind9
+  register: isChanged
 
-- name: Ensure bind9 is running
-  ansible.builtin.service:
+- name: Restart bind9
+  service:
+    name: bind9
+    state: restarted
+    enabled: yes
+  when: isChanged.changed
+     
+- name: Ensure bind9 is started
+  service:
     name: bind9
     state: started
+
+- name: Set A records
+  when: inventory_hostname == master_dns
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_update_key }}"
+    server: "localhost"
+    zone: "{{ startup }}"
+    record: "{{ item.key }}"
+    type: "A"
+    value: "{{ item.value }}"
+  loop: "{{ dns_a_records | dict2items }}"
+  register: isChangedRecord
+  
+- name: Set CNAME records
+  when: inventory_hostname == master_dns
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_update_key }}"
+    server: "localhost"
+    zone: "{{ startup }}"
+    record: "{{ item.key }}"
+    type: "CNAME"
+    value: "{{ item.value }}"
+  loop: "{{ dns_cname_records | dict2items }}"
+  register: isChangedRecord
+
