@@ -74,9 +74,10 @@ forwarders:
   - 9.9.9.10
   
 localnw:
- - 192.168.42.0/42;
- - 192.168.43.0/42;
- - 127.0.0.1/8;
+ - 192.168.42.0/24;
+ - 192.168.43.0/24;
+ - 127.0.0.0/8;
+ - 172.0.0.0/8;
  
 dns_a_records:
   cloudflare: 1.1.1.1
@@ -86,7 +87,7 @@ dns_a_records:
   
 dns_cname_records:
   grafana: "{{ groups['grafana'][0] }}"
-  influxdb: "{{ groups['influx_telegrapf'][0] }}"
+  influxdb: "{{ groups['influx_telegraf'][0] }}"
   prometheus: "{{ groups['prometheus'][0] }}"
   web1: "{{ groups['web_servers'][0] }}"
   web2: "{{ groups['web_servers'][1] }}"
@@ -108,7 +109,7 @@ prometheus_jobs:
     target_group: all
   - name: bind9
     target_port: 9119
-    target_group: dns_server
+    target_group: all
   - name: mysql
     target_port: 9104
     target_group: db_servers
