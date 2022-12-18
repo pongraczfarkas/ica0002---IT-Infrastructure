@@ -20,12 +20,6 @@
   apt:
     name: telegraf
 
-- name: Ensure Telegraf is running
-  service:
-    name: telegraf
-    state: started
-    enabled: yes
-
 - name: Copy the telegraf config file and Restart telegraf
   copy:
     src: telegraf.conf

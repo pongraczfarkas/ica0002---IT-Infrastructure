@@ -15,7 +15,7 @@ datasources:
  - name: InfluxDB
    type: influxdb
 #   orgId: 1
-   url: http://{{groups['influx_telegrapf'][0]}}:8086
+   url: http://{{groups['influx_telegraf'][0]}}:8086
    password:
    user:
    database: latency
@@ -24,7 +24,7 @@ datasources:
  - name: InfluxDB-telegraf
    type: influxdb
 #   orgId: 1
-   url: http://{{groups['influx_telegrapf'][0]}}:8086
+   url: http://{{groups['influx_telegraf'][0]}}:8086
    password:
    user:
    database: telegraf

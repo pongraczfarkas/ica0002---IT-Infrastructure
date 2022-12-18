@@ -1,6 +1,6 @@
-pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=16122 ansible_user=ubuntu 
-pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=5322 ansible_user=ubuntu 
-pongraczfarkas-3 ansible_host=193.40.156.67 ansible_port=13722 ansible_user=ubuntu 
+pongraczfarkas-1 ansible_host=193.40.156.67 ansible_port=8422 ansible_user=ubuntu 
+pongraczfarkas-2 ansible_host=193.40.156.67 ansible_port=10122 ansible_user=ubuntu 
+pongraczfarkas-3 ansible_host=193.40.156.67 ansible_port=1722 ansible_user=ubuntu 
 
 
 [db_servers]
