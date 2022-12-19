@@ -9,6 +9,7 @@
     priv: "{{ mysql_database }}.*:SELECT,LOCK TABLES"
     host: "localhost"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true
 
 - name: Create two necessary directories for backup
   file:
@@ -28,6 +29,7 @@
     owner: backup
     group: backup
     mode: 0700
+  no_log: true
 
 - name: Copy mysql cron
   template:

@@ -36,4 +36,5 @@
     env:
       AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ agama_db }}.{{startup}}/{{ mysql_database }}
     published_ports: "{{ agama_container_prefix_port|string+item }}:8000"
+  no_log: true
   with_sequence: 0-1

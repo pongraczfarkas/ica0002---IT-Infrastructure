@@ -6,6 +6,7 @@
     generate_ssh_key: yes
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
+  no_log: true
 
 - name: Uploads /home/backup/.ssh/known_host
   template:
@@ -14,3 +15,4 @@
     owner: root
     group: root
     mode: 0644
+  no_log: true

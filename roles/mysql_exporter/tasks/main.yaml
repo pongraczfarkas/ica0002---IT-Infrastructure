@@ -18,6 +18,7 @@
     owner: prometheus
     group: prometheus
     mode: 0644
+  no_log: true
   notify: 
     - Restart mysql
     - Restart mysqld exporter
@@ -34,6 +35,7 @@
     password: "{{ mysql_exporter_pass }}"
     priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true
 
 - name: Sleep for 10 seconds and continue with play
   wait_for:

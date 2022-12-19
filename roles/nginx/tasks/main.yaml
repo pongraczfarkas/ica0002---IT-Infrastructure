@@ -1,9 +1,7 @@
 - name: Install 'nginx'
   apt:
     name: nginx
-    state: latest
-    update_cache: yes
-
+    
 - name: Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports
   template:
     src: default.j2

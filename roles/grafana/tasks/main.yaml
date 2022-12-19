@@ -12,6 +12,7 @@
     src: grafana.ini.j2
     dest: /opt/grafana/grafana.ini
   notify: Restart docker grafana
+  no_log: true
 
 - name: Copy datasource.yaml
   template:

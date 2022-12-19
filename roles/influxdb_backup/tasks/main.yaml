@@ -16,8 +16,6 @@
     owner: "{{ backup_user }}"
     group: influxdb
 
-
-
 - name: Copy influxdb cron
   template:
     src: influxdb-backup.j2
