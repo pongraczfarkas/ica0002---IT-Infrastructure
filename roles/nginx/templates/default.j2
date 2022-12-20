@@ -3,8 +3,11 @@ server {
 	listen 80 default_server;
 	server_name _;
 
+
 {% for sites in reverse_proxy %}
+{% if inventory_hostname in sites['host'] %}
 	location {{sites['location']}} {
+
 {% if 'extra' in sites %}
 		{{sites['extra']}}
 {% endif %}
@@ -14,7 +17,8 @@ server {
 		proxy_pass http://{{groups[sites['name']][0]}}:{{sites['port']}};
 {% endif %}
 	}
-
+{% endif %}
 {% endfor %}	
 
+	
 }

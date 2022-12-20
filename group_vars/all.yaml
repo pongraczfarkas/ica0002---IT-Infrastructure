@@ -122,21 +122,32 @@ prometheus_jobs:
   - name: haproxy_exporter
     target_port: 9101
     target_group: haproxy
+  - name: haproxy_exporter_backend
+    target_port: 9188
+    target_group: haproxy
   - name: keepalived
     target_port: 9165
     target_group: keepalived
 
 reverse_proxy:
   - name: prometheus
+    domain: prometheus.farkas.fp
     port: 9090
     location: /prometheus
+    host:
+      - pongraczfarkas-3
   - name: grafana
+    domain: grafana.farkas.fp
     port: 3001
     location: /grafana
     extra : proxy_set_header Host $http_host;
+    host:
+      - pongraczfarkas-3
   - name: haproxy
-    domain: haproxy
+    domain: haproxy.farkas.fp
     port: 88
     location: /
     extra : proxy_set_header Host $http_host;
-
+    host:
+      - pongraczfarkas-1
+      - pongraczfarkas-2
