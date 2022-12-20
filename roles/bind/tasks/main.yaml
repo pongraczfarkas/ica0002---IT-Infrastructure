@@ -78,4 +78,8 @@
   loop: "{{ dns_cname_records | dict2items }}"
   register: isChangedRecord
   no_log: true
+  
+- name: rndc reload
+  shell: rndc reload
+  when: isChanged.changed
 
