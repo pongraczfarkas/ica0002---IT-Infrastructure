@@ -5,4 +5,4 @@
 - name: Enable Bind9 exporter
   service:
     name: prometheus-bind-exporter
-    state: started
+    state: restarted
