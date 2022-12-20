@@ -1,4 +1,4 @@
-T 20 dets  2022 01:26:54 EET
+T 20 dets  2022 13:14:39 EET
 + hostname
 farkas-VirtualBox
 + ansible-playbook infra.yaml --diff
@@ -11,9 +11,9 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 
 TASK [setup] *******************************************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [init] ********************************************************************
 
@@ -23,16 +23,16 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 
 TASK [init : Update APT cache] *************************************************
-ok: [pongraczfarkas-3]
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
+changed: [pongraczfarkas-3]
+changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY [bind] ********************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [bind : Install bind9] ****************************************************
 The following additional packages will be installed:
@@ -44,16 +44,6 @@ The following NEW packages will be installed:
 The following packages will be upgraded:
   bind9-dnsutils bind9-libs
 2 upgraded, 4 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
-The following additional packages will be installed:
-  bind9-dnsutils bind9-libs bind9-utils dns-root-data python3-ply
-Suggested packages:
-  bind-doc resolvconf python-ply-doc
-The following NEW packages will be installed:
-  bind9 bind9-utils dns-root-data python3-ply
-The following packages will be upgraded:
-  bind9-dnsutils bind9-libs
-2 upgraded, 4 newly installed, 0 to remove and 229 not upgraded.
 changed: [pongraczfarkas-3]
 The following additional packages will be installed:
   bind9-dnsutils bind9-libs bind9-utils dns-root-data python3-ply
@@ -65,6 +55,16 @@ The following packages will be upgraded:
   bind9-dnsutils bind9-libs
 2 upgraded, 4 newly installed, 0 to remove and 229 not upgraded.
 changed: [pongraczfarkas-1]
+The following additional packages will be installed:
+  bind9-dnsutils bind9-libs bind9-utils dns-root-data python3-ply
+Suggested packages:
+  bind-doc resolvconf python-ply-doc
+The following NEW packages will be installed:
+  bind9 bind9-utils dns-root-data python3-ply
+The following packages will be upgraded:
+  bind9-dnsutils bind9-libs
+2 upgraded, 4 newly installed, 0 to remove and 229 not upgraded.
+changed: [pongraczfarkas-2]
 
 TASK [bind : Install python-dnspython] *****************************************
 The following NEW packages will be installed:
@@ -74,17 +74,17 @@ changed: [pongraczfarkas-3]
 The following NEW packages will be installed:
   python3-dnspython
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 The following NEW packages will be installed:
   python3-dnspython
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [bind : Upload db.domain.j2] **********************************************
 skipping: [pongraczfarkas-1]
 skipping: [pongraczfarkas-2]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpbksb1xmi/db.farkas.fp.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmphakpxn5p/db.farkas.fp.j2
 @@ -0,0 +1,21 @@
 +$TTL	604800
 +farkas.fp.	IN	SOA	pongraczfarkas-3.farkas.fp. logan.farkas.fp. (
@@ -97,14 +97,14 @@ skipping: [pongraczfarkas-2]
 +farkas.fp.	IN	NS	pongraczfarkas-1
 +farkas.fp.	IN	NS	pongraczfarkas-2
 +farkas.fp.	IN	NS	pongraczfarkas-3
-+pongraczfarkas-1	IN	A	192.168.42.146 
-+pongraczfarkas-2	IN	A	192.168.42.62 
-+pongraczfarkas-3	IN	A	192.168.42.200 
-+db	IN	A	192.168.42.146 
-+db	IN	A	192.168.42.62 
++pongraczfarkas-1	IN	A	192.168.42.160 
++pongraczfarkas-2	IN	A	192.168.42.148 
++pongraczfarkas-3	IN	A	192.168.42.25 
++db	IN	A	192.168.42.160 
++db	IN	A	192.168.42.148 
 +
-+haproxy	IN	A	192.168.42.146 
-+haproxy	IN	A	192.168.42.62 
++haproxy	IN	A	192.168.42.160 
++haproxy	IN	A	192.168.42.148 
 +
 +backup	IN	A	192.168.42.132 
 
@@ -114,7 +114,7 @@ TASK [bind : Upload db.domain.reverse.j2] **************************************
 skipping: [pongraczfarkas-1]
 skipping: [pongraczfarkas-2]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp8_9ew_08/db.farkas.fp.reverse.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp69i6jtr1/db.farkas.fp.reverse.j2
 @@ -0,0 +1,17 @@
 +$TTL	604800
 +168.192.in-addr.arpa.	IN	SOA	pongraczfarkas-3.farkas.fp. logan.farkas.fp. (
@@ -130,9 +130,9 @@ skipping: [pongraczfarkas-2]
 +168.192.in-addr.arpa.	IN	NS pongraczfarkas-3.farkas.fp.
 +
 +
-+146.42 IN PTR pongraczfarkas-1.farkas.fp.
-+62.42 IN PTR pongraczfarkas-2.farkas.fp.
-+200.42 IN PTR pongraczfarkas-3.farkas.fp.
++160.42 IN PTR pongraczfarkas-1.farkas.fp.
++148.42 IN PTR pongraczfarkas-2.farkas.fp.
++25.42 IN PTR pongraczfarkas-3.farkas.fp.
 
 changed: [pongraczfarkas-3]
 
@@ -147,9 +147,9 @@ changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-3]
 
 TASK [bind : Restart bind9] ****************************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-3]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [bind : Ensure bind9 is started] ******************************************
 ok: [pongraczfarkas-1]
@@ -179,20 +179,20 @@ skipping: [pongraczfarkas-1] => (item=None)
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
+skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
-skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
-skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1]
+skipping: [pongraczfarkas-2] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
@@ -212,8 +212,8 @@ changed: [pongraczfarkas-3] => (item=None)
 changed: [pongraczfarkas-3]
 
 RUNNING HANDLER [bind : Restart bind9] *****************************************
-changed: [pongraczfarkas-3]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-3]
 changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [bind : rndc reload] *******************************************
@@ -223,12 +223,12 @@ PLAY [add dns server to all host] **********************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [dns : template] **********************************************************
 --- before: /etc/resolv.conf
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp7soiuhp0/resolv.conf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp6o6d99mj/resolv.conf.j2
 @@ -1,19 +1,3 @@
 -# This file is managed by man:systemd-resolved(8). Do not edit.
 -#
@@ -249,13 +249,13 @@ TASK [dns : template] **********************************************************
 -nameserver 127.0.0.53
 -options edns0 trust-ad
 -search openstacklocal
-+nameserver 192.168.42.62 
-+nameserver 192.168.42.146 
++nameserver 192.168.42.148 
++nameserver 192.168.42.160 
 +search farkas.fp
 
 changed: [pongraczfarkas-1]
 --- before: /etc/resolv.conf
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpok7hh2qd/resolv.conf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmprbvpudk4/resolv.conf.j2
 @@ -1,19 +1,3 @@
 -# This file is managed by man:systemd-resolved(8). Do not edit.
 -#
@@ -276,51 +276,47 @@ changed: [pongraczfarkas-1]
 -nameserver 127.0.0.53
 -options edns0 trust-ad
 -search openstacklocal
-+nameserver 192.168.42.62 
-+nameserver 192.168.42.146 
-+search farkas.fp
-
-changed: [pongraczfarkas-3]
---- before: /etc/resolv.conf
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmprblwp8lo/resolv.conf.j2
-@@ -1,19 +1,3 @@
--# This file is managed by man:systemd-resolved(8). Do not edit.
--#
--# This is a dynamic resolv.conf file for connecting local clients to the
--# internal DNS stub resolver of systemd-resolved. This file lists all
--# configured search domains.
--#
--# Run "resolvectl status" to see details about the uplink DNS servers
--# currently in use.
--#
--# Third party programs must not access this file directly, but only through the
--# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
--# replace this symlink by a static file or a different symlink.
--#
--# See man:systemd-resolved.service(8) for details about the supported modes of
--# operation for /etc/resolv.conf.
--
--nameserver 127.0.0.53
--options edns0 trust-ad
--search openstacklocal
-+nameserver 192.168.42.62 
-+nameserver 192.168.42.146 
++nameserver 192.168.42.148 
++nameserver 192.168.42.160 
 +search farkas.fp
 
 changed: [pongraczfarkas-2]
+--- before: /etc/resolv.conf
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp5fz8ehre/resolv.conf.j2
+@@ -1,19 +1,3 @@
+-# This file is managed by man:systemd-resolved(8). Do not edit.
+-#
+-# This is a dynamic resolv.conf file for connecting local clients to the
+-# internal DNS stub resolver of systemd-resolved. This file lists all
+-# configured search domains.
+-#
+-# Run "resolvectl status" to see details about the uplink DNS servers
+-# currently in use.
+-#
+-# Third party programs must not access this file directly, but only through the
+-# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
+-# replace this symlink by a static file or a different symlink.
+-#
+-# See man:systemd-resolved.service(8) for details about the supported modes of
+-# operation for /etc/resolv.conf.
+-
+-nameserver 127.0.0.53
+-options edns0 trust-ad
+-search openstacklocal
++nameserver 192.168.42.148 
++nameserver 192.168.42.160 
++search farkas.fp
+
+changed: [pongraczfarkas-3]
 
 PLAY [bind_exporter] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [bind_exporter : Install 'prometheus-bind-exporter'] **********************
-The following NEW packages will be installed:
-  prometheus-bind-exporter
-0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
 The following NEW packages will be installed:
   prometheus-bind-exporter
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
@@ -329,11 +325,15 @@ The following NEW packages will be installed:
   prometheus-bind-exporter
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
 changed: [pongraczfarkas-3]
+The following NEW packages will be installed:
+  prometheus-bind-exporter
+0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
+changed: [pongraczfarkas-2]
 
 TASK [bind_exporter : Enable Bind9 exporter] ***********************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [Database servers] ********************************************************
 
@@ -347,13 +347,13 @@ Suggested packages:
 The following NEW packages will be installed:
   python3-pymysql
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 Suggested packages:
   python-pymysql-doc
 The following NEW packages will be installed:
   python3-pymysql
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql : Install 'mysql-server'] ******************************************
 The following additional packages will be installed:
@@ -395,7 +395,7 @@ changed: [pongraczfarkas-2]
 
 TASK [mysql : Copy the mysql config file and restart mysql server] *************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp7q53nhj6/mysqld.cnf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpqq6cd2bb/mysqld.cnf.j2
 @@ -0,0 +1,8 @@
 +[mysqld]
 +bind-address = 0.0.0.0
@@ -404,11 +404,11 @@ TASK [mysql : Copy the mysql config file and restart mysql server] *************
 +log-bin = /var/log/mysql/mysql-bin.log
 +relay-log = /var/log/mysql/mysql-relay.log
 +replicate-do-db = agama
-+server-id = 146
++server-id = 160
 
 changed: [pongraczfarkas-1]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpa7g55937/mysqld.cnf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpd5_dwk5s/mysqld.cnf.j2
 @@ -0,0 +1,8 @@
 +[mysqld]
 +bind-address = 0.0.0.0
@@ -417,29 +417,29 @@ changed: [pongraczfarkas-1]
 +log-bin = /var/log/mysql/mysql-bin.log
 +relay-log = /var/log/mysql/mysql-relay.log
 +replicate-do-db = agama
-+server-id = 62
++server-id = 148
 
 changed: [pongraczfarkas-2]
 
 TASK [mysql : MySQL database] **************************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql : MySQL user] ******************************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql : Create MySQL replication user] ***********************************
-changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 
 TASK [mysql : Make replication read only] **************************************
 changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [mysql : Start mysql server] **********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Install duplicity] ****************************************
 The following additional packages will be installed:
@@ -466,24 +466,10 @@ The following NEW packages will be installed:
 changed: [pongraczfarkas-1]
 
 TASK [mysql_backup : Create MySQL backup user] *********************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_backup : Create two necessary directories for backup] **************
---- before
-+++ after
-@@ -1,6 +1,6 @@
- {
--    "mode": "0755",
--    "owner": 0,
-+    "mode": "0777",
-+    "owner": 34,
-     "path": "/home/backup/restore",
--    "state": "absent"
-+    "state": "directory"
- }
-
-changed: [pongraczfarkas-2] => (item=/home/backup/restore)
 --- before
 +++ after
 @@ -1,6 +1,6 @@
@@ -506,12 +492,12 @@ changed: [pongraczfarkas-1] => (item=/home/backup/restore)
 -    "owner": 0,
 +    "mode": "0777",
 +    "owner": 34,
-     "path": "/home/backup/mysql",
+     "path": "/home/backup/restore",
 -    "state": "absent"
 +    "state": "directory"
  }
 
-changed: [pongraczfarkas-2] => (item=/home/backup/mysql)
+changed: [pongraczfarkas-2] => (item=/home/backup/restore)
 --- before
 +++ after
 @@ -1,6 +1,6 @@
@@ -526,20 +512,34 @@ changed: [pongraczfarkas-2] => (item=/home/backup/mysql)
  }
 
 changed: [pongraczfarkas-1] => (item=/home/backup/mysql)
+--- before
++++ after
+@@ -1,6 +1,6 @@
+ {
+-    "mode": "0755",
+-    "owner": 0,
++    "mode": "0777",
++    "owner": 34,
+     "path": "/home/backup/mysql",
+-    "state": "absent"
++    "state": "directory"
+ }
+
+changed: [pongraczfarkas-2] => (item=/home/backup/mysql)
 
 TASK [mysql_backup : Copy MySQL configuration file] ****************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_backup : Copy mysql cron] ******************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpnuzbto0q/mysql-backup.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpng2252lm/mysql-backup.j2
 @@ -0,0 +1 @@
 +
 
 changed: [pongraczfarkas-1]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp8zchgqv7/mysql-backup.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpg93u3_v6/mysql-backup.j2
 @@ -0,0 +1,5 @@
 +0 0 * * *  backup  mysqldump agama > /home/backup/mysql/agama.sql
 +
@@ -568,12 +568,12 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Sleep for 10 seconds and continue with play] ************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Copy my.cnf.j2 to /var/lib/prometheus/.my.cnf] **********
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Copy slave] *********************************************
 --- before: /etc/default/prometheus-mysqld-exporter
@@ -701,7 +701,7 @@ TASK [mysql_exporter : Copy slave] *********************************************
 -#       "logger:syslog?appname=bob&local=7" or "logger:stdout?json=true"
 +ARGS="--collect.slave_status"
 
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 --- before: /etc/default/prometheus-mysqld-exporter
 +++ after: /home/farkas/Documents/ica0002/roles/mysql_exporter/files/prometheus-mysqld-exporter
 @@ -1,120 +1 @@
@@ -827,23 +827,23 @@ changed: [pongraczfarkas-2]
 -#       "logger:syslog?appname=bob&local=7" or "logger:stdout?json=true"
 +ARGS="--collect.slave_status"
 
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Create MySQL exporter user] *****************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Sleep for 10 seconds and continue with play] ************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysqld exporter] **********************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysql] ********************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 RUNNING HANDLER [mysql : Reset MySQL source] ***********************************
 skipping: [pongraczfarkas-2] => (item=stopreplica) 
@@ -866,14 +866,14 @@ changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [mysql_exporter : Restart mysqld exporter] *********************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY [Database handler] ********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_helper : mysql execute query] **************************************
 skipping: [pongraczfarkas-1] => (item=stop slave;) 
@@ -886,8 +886,8 @@ ok: [pongraczfarkas-2] => (item=start slave;)
 PLAY [web_app] *****************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [docker : Install docker.io and python3-docker] ***************************
 The following additional packages will be installed:
@@ -900,7 +900,7 @@ The following NEW packages will be installed:
   bridge-utils containerd dnsmasq-base docker.io libidn11 pigz python3-docker
   python3-websocket runc ubuntu-fan
 0 upgraded, 10 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 The following additional packages will be installed:
   bridge-utils containerd dnsmasq-base libidn11 pigz python3-websocket runc
   ubuntu-fan
@@ -911,7 +911,7 @@ The following NEW packages will be installed:
   bridge-utils containerd dnsmasq-base docker.io libidn11 pigz python3-docker
   python3-websocket runc ubuntu-fan
 0 upgraded, 10 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [docker : create folder] **************************************************
 ok: [pongraczfarkas-1]
@@ -919,21 +919,21 @@ ok: [pongraczfarkas-2]
 
 TASK [docker : copy dns] *******************************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpl8guagwq/daemon.json
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpw85sv__3/daemon.json
 @@ -0,0 +1,3 @@
 +{
-+    "dns": ["192.168.42.200"]
-+}
-
-changed: [pongraczfarkas-2]
---- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp4rr_qhgw/daemon.json
-@@ -0,0 +1,3 @@
-+{
-+    "dns": ["192.168.42.200"]
++    "dns": ["192.168.42.25"]
 +}
 
 changed: [pongraczfarkas-1]
+--- before
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpwiptq7qm/daemon.json
+@@ -0,0 +1,3 @@
++{
++    "dns": ["192.168.42.25"]
++}
+
+changed: [pongraczfarkas-2]
 
 TASK [docker : Ensure docker is running] ***************************************
 ok: [pongraczfarkas-1]
@@ -962,28 +962,28 @@ changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [agama : Add the user agama] **********************************************
-changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 
 TASK [agama : Download agama container from URL] *******************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [agama : Download agama.py] ***********************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [agama : Create agama docker image] ***************************************
 changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [agama : Agama Docker container] ******************************************
-changed: [pongraczfarkas-2] => (item=None)
 changed: [pongraczfarkas-1] => (item=None)
 changed: [pongraczfarkas-2] => (item=None)
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1] => (item=None)
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2] => (item=None)
+changed: [pongraczfarkas-2]
 
 TASK [uwsgi : Install uwsgi] ***************************************************
 The following additional packages will be installed:
@@ -994,7 +994,7 @@ Suggested packages:
 The following NEW packages will be installed:
   libjansson4 libnorm1 libpgm-5.2-0 libzmq5 uwsgi uwsgi-core
 0 upgraded, 6 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 The following additional packages will be installed:
   libjansson4 libnorm1 libpgm-5.2-0 libzmq5 uwsgi-core
 Suggested packages:
@@ -1003,7 +1003,7 @@ Suggested packages:
 The following NEW packages will be installed:
   libjansson4 libnorm1 libpgm-5.2-0 libzmq5 uwsgi uwsgi-core
 0 upgraded, 6 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [uwsgi : Install 'uwsgi-plugin-python3'] **********************************
 Suggested packages:
@@ -1011,20 +1011,20 @@ Suggested packages:
 The following NEW packages will be installed:
   uwsgi-plugin-python3
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 Suggested packages:
   python3-uwsgidecorators
 The following NEW packages will be installed:
   uwsgi-plugin-python3
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY [reverse_proxy] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-1]
 
 TASK [nginx : Install 'nginx'] *************************************************
 The following additional packages will be installed:
@@ -1040,7 +1040,7 @@ The following NEW packages will be installed:
   libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libtiff5
   libwebp6 libxpm4 nginx nginx-common nginx-core
 0 upgraded, 17 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-3]
 The following additional packages will be installed:
   fontconfig-config fonts-dejavu-core libfontconfig1 libgd3 libjbig0
   libjpeg-turbo8 libjpeg8 libnginx-mod-http-image-filter
@@ -1068,121 +1068,11 @@ The following NEW packages will be installed:
   libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libtiff5
   libwebp6 libxpm4 nginx nginx-common nginx-core
 0 upgraded, 17 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-3]
+changed: [pongraczfarkas-2]
 
 TASK [nginx : Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports] ***
 --- before: /etc/nginx/sites-enabled/default
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpvbgicp_v/default.j2
-@@ -1,91 +1,22 @@
--##
--# You should look at the following URL's in order to grasp a solid understanding
--# of Nginx configuration files in order to fully unleash the power of Nginx.
--# https://www.nginx.com/resources/wiki/start/
--# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
--# https://wiki.debian.org/Nginx/DirectoryStructure
--#
--# In most cases, administrators will remove this file from sites-enabled/ and
--# leave it as reference inside of sites-available where it will continue to be
--# updated by the nginx packaging team.
--#
--# This file will automatically load configuration files provided by other
--# applications, such as Drupal or Wordpress. These applications will be made
--# available underneath a path with that package name, such as /drupal8.
--#
--# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
--##
-+server {
- 
--# Default server configuration
--#
--server {
- 	listen 80 default_server;
--	listen [::]:80 default_server;
--
--	# SSL configuration
--	#
--	# listen 443 ssl default_server;
--	# listen [::]:443 ssl default_server;
--	#
--	# Note: You should disable gzip for SSL traffic.
--	# See: https://bugs.debian.org/773332
--	#
--	# Read up on ssl_ciphers to ensure a secure configuration.
--	# See: https://bugs.debian.org/765782
--	#
--	# Self signed certs generated by the ssl-cert package
--	# Don't use them in a production server!
--	#
--	# include snippets/snakeoil.conf;
--
--	root /var/www/html;
--
--	# Add index.php to the list if you are using PHP
--	index index.html index.htm index.nginx-debian.html;
--
- 	server_name _;
- 
--	location / {
--		# First attempt to serve request as file, then
--		# as directory, then fall back to displaying a 404.
--		try_files $uri $uri/ =404;
-+	location /prometheus {
-+		proxy_pass http://pongraczfarkas-3:9090;
- 	}
- 
--	# pass PHP scripts to FastCGI server
--	#
--	#location ~ \.php$ {
--	#	include snippets/fastcgi-php.conf;
--	#
--	#	# With php-fpm (or other unix sockets):
--	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
--	#	# With php-cgi (or other tcp sockets):
--	#	fastcgi_pass 127.0.0.1:9000;
--	#}
-+	location /grafana {
-+		proxy_set_header Host $http_host;
-+		proxy_pass http://pongraczfarkas-3:3001;
-+	}
- 
--	# deny access to .htaccess files, if Apache's document root
--	# concurs with nginx's one
--	#
--	#location ~ /\.ht {
--	#	deny all;
--	#}
-+	location / {
-+		proxy_set_header Host $http_host;
-+		proxy_pass http://haproxy:88;
-+	}
-+
-+	
-+
- }
--
--
--# Virtual Host configuration for example.com
--#
--# You can move that to a different file under sites-available/ and symlink that
--# to sites-enabled/ to enable it.
--#
--#server {
--#	listen 80;
--#	listen [::]:80;
--#
--#	server_name example.com;
--#
--#	root /var/www/example.com;
--#	index index.html;
--#
--#	location / {
--#		try_files $uri $uri/ =404;
--#	}
--#}
-
-changed: [pongraczfarkas-3]
---- before: /etc/nginx/sites-enabled/default
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpek1e_aa0/default.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpqig3bby9/default.j2
 @@ -1,91 +1,22 @@
 -##
 -# You should look at the following URL's in order to grasp a solid understanding
@@ -1292,7 +1182,7 @@ changed: [pongraczfarkas-3]
 
 changed: [pongraczfarkas-1]
 --- before: /etc/nginx/sites-enabled/default
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpbsh_p5os/default.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpomjcxgv_/default.j2
 @@ -1,91 +1,22 @@
 -##
 -# You should look at the following URL's in order to grasp a solid understanding
@@ -1401,17 +1291,127 @@ changed: [pongraczfarkas-1]
 -#}
 
 changed: [pongraczfarkas-2]
+--- before: /etc/nginx/sites-enabled/default
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmplkavtavk/default.j2
+@@ -1,91 +1,22 @@
+-##
+-# You should look at the following URL's in order to grasp a solid understanding
+-# of Nginx configuration files in order to fully unleash the power of Nginx.
+-# https://www.nginx.com/resources/wiki/start/
+-# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+-# https://wiki.debian.org/Nginx/DirectoryStructure
+-#
+-# In most cases, administrators will remove this file from sites-enabled/ and
+-# leave it as reference inside of sites-available where it will continue to be
+-# updated by the nginx packaging team.
+-#
+-# This file will automatically load configuration files provided by other
+-# applications, such as Drupal or Wordpress. These applications will be made
+-# available underneath a path with that package name, such as /drupal8.
+-#
+-# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+-##
++server {
+ 
+-# Default server configuration
+-#
+-server {
+ 	listen 80 default_server;
+-	listen [::]:80 default_server;
+-
+-	# SSL configuration
+-	#
+-	# listen 443 ssl default_server;
+-	# listen [::]:443 ssl default_server;
+-	#
+-	# Note: You should disable gzip for SSL traffic.
+-	# See: https://bugs.debian.org/773332
+-	#
+-	# Read up on ssl_ciphers to ensure a secure configuration.
+-	# See: https://bugs.debian.org/765782
+-	#
+-	# Self signed certs generated by the ssl-cert package
+-	# Don't use them in a production server!
+-	#
+-	# include snippets/snakeoil.conf;
+-
+-	root /var/www/html;
+-
+-	# Add index.php to the list if you are using PHP
+-	index index.html index.htm index.nginx-debian.html;
+-
+ 	server_name _;
+ 
+-	location / {
+-		# First attempt to serve request as file, then
+-		# as directory, then fall back to displaying a 404.
+-		try_files $uri $uri/ =404;
++	location /prometheus {
++		proxy_pass http://pongraczfarkas-3:9090;
+ 	}
+ 
+-	# pass PHP scripts to FastCGI server
+-	#
+-	#location ~ \.php$ {
+-	#	include snippets/fastcgi-php.conf;
+-	#
+-	#	# With php-fpm (or other unix sockets):
+-	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+-	#	# With php-cgi (or other tcp sockets):
+-	#	fastcgi_pass 127.0.0.1:9000;
+-	#}
++	location /grafana {
++		proxy_set_header Host $http_host;
++		proxy_pass http://pongraczfarkas-3:3001;
++	}
+ 
+-	# deny access to .htaccess files, if Apache's document root
+-	# concurs with nginx's one
+-	#
+-	#location ~ /\.ht {
+-	#	deny all;
+-	#}
++	location / {
++		proxy_set_header Host $http_host;
++		proxy_pass http://haproxy:88;
++	}
++
++	
++
+ }
+-
+-
+-# Virtual Host configuration for example.com
+-#
+-# You can move that to a different file under sites-available/ and symlink that
+-# to sites-enabled/ to enable it.
+-#
+-#server {
+-#	listen 80;
+-#	listen [::]:80;
+-#
+-#	server_name example.com;
+-#
+-#	root /var/www/example.com;
+-#	index index.html;
+-#
+-#	location / {
+-#		try_files $uri $uri/ =404;
+-#	}
+-#}
+
+changed: [pongraczfarkas-3]
 
 TASK [nginx : Start nginx] *****************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Install 'prometheus-nginx-exporter'] ********************
 The following NEW packages will be installed:
   prometheus-nginx-exporter
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 The following NEW packages will be installed:
   prometheus-nginx-exporter
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
@@ -1419,22 +1419,11 @@ changed: [pongraczfarkas-3]
 The following NEW packages will be installed:
   prometheus-nginx-exporter
 0 upgraded, 1 newly installed, 0 to remove and 229 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Copy exporter to /etc/nginx/sites-enabled/exporter] *****
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp4kuy6pqf/exporter.j2
-@@ -0,0 +1,6 @@
-+server {
-+        listen 8080 default_server;
-+        location = /stub_status {
-+                stub_status;
-+        }
-+}
-
-changed: [pongraczfarkas-2]
---- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpnzb_ghk_/exporter.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpjwqy4p8q/exporter.j2
 @@ -0,0 +1,6 @@
 +server {
 +        listen 8080 default_server;
@@ -1445,7 +1434,7 @@ changed: [pongraczfarkas-2]
 
 changed: [pongraczfarkas-3]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpksch9f14/exporter.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpwmscy30p/exporter.j2
 @@ -0,0 +1,6 @@
 +server {
 +        listen 8080 default_server;
@@ -1455,6 +1444,17 @@ changed: [pongraczfarkas-3]
 +}
 
 changed: [pongraczfarkas-1]
+--- before
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp5x2ovmy3/exporter.j2
+@@ -0,0 +1,6 @@
++server {
++        listen 8080 default_server;
++        location = /stub_status {
++                stub_status;
++        }
++}
+
+changed: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Execute handlers preemptively] **************************
 
@@ -1464,35 +1464,35 @@ changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
 
 RUNNING HANDLER [nginx_exporter : Restart nginx] *******************************
-changed: [pongraczfarkas-3]
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-3]
 
 RUNNING HANDLER [nginx_exporter : Restart nginx exporter] **********************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-3]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Sleep for 10 seconds and continue with play] ************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Start nginx] ********************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Start nginx exporter] ***********************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [vm exporters] ************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [node_exporter : Install 'prometheus-node-exporter'] **********************
@@ -1553,7 +1553,7 @@ changed: [pongraczfarkas-3]
 
 TASK [prometheus : Copy prometheus.yml.j2 template] ****************************
 --- before: /etc/prometheus/prometheus.yml
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp4i2gkwm0/prometheus.yml.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmphe6xkmbw/prometheus.yml.j2
 @@ -3,42 +3,49 @@
  global:
    scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
@@ -1640,7 +1640,7 @@ changed: [pongraczfarkas-3]
 
 TASK [prometheus : Copy prometheus.j2 template] ********************************
 --- before: /etc/default/prometheus
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp6666s1us/prometheus.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpu68j510i/prometheus.j2
 @@ -1,57 +1 @@
 -# Set the command-line arguments to pass to the server.
 -ARGS=""
@@ -1699,7 +1699,7 @@ TASK [prometheus : Copy prometheus.j2 template] ********************************
 -#                             Maximum number of queries executed concurrently.
 -#  --log.level=info           Only log messages with the given severity or
 -#                             above. One of: [debug, info, warn, error]
-+ARGS=" --web.external-url=http://193.40.156.67:20080/prometheus"
++ARGS=" --web.external-url=http://193.40.156.67:2580/prometheus"
 
 changed: [pongraczfarkas-3]
 
@@ -2430,7 +2430,7 @@ changed: [pongraczfarkas-3]
 
 TASK [influxdb_backup : Copy influxdb cron] ************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpmp6wfsqn/influxdb-backup.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp59bt78sx/influxdb-backup.j2
 @@ -0,0 +1,7 @@
 +
 +
@@ -2524,7 +2524,7 @@ changed: [pongraczfarkas-1] => (item={'src': 'pinger.service', 'dest': '/etc/sys
 
 TASK [pinger : Copy pinger.conf.j2 template into /etc/pinger/pinger.conf] ******
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp6cy0lqe2/pinger.conf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmprkpgc80m/pinger.conf.j2
 @@ -0,0 +1,3 @@
 +database_url=http://pongraczfarkas-3.farkas.fp:8086
 +database_name=latency
@@ -2561,18 +2561,7 @@ changed: [pongraczfarkas-2]
 
 TASK [rsyslog : Reconfigure Rsyslog] *******************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpdcxv5vtj/50-telegraf.conf.j2
-@@ -0,0 +1,6 @@
-+$ActionQueueType LinkedList # use asynchronous processing
-+$ActionQueueFileName srvrfwd # set file name, also enables disk mode
-+$ActionResumeRetryCount -1 # infinite retries on insert failure
-+$ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down
-+
-+*.* @pongraczfarkas-3:6514;RSYSLOG_SyslogProtocol23Format
-
-changed: [pongraczfarkas-1]
---- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpeg4vmot2/50-telegraf.conf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp60ht9m66/50-telegraf.conf.j2
 @@ -0,0 +1,6 @@
 +$ActionQueueType LinkedList # use asynchronous processing
 +$ActionQueueFileName srvrfwd # set file name, also enables disk mode
@@ -2582,14 +2571,25 @@ changed: [pongraczfarkas-1]
 +*.* @pongraczfarkas-3:6514;RSYSLOG_SyslogProtocol23Format
 
 changed: [pongraczfarkas-2]
+--- before
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp1i4ohnyk/50-telegraf.conf.j2
+@@ -0,0 +1,6 @@
++$ActionQueueType LinkedList # use asynchronous processing
++$ActionQueueFileName srvrfwd # set file name, also enables disk mode
++$ActionResumeRetryCount -1 # infinite retries on insert failure
++$ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down
++
++*.* @pongraczfarkas-3:6514;RSYSLOG_SyslogProtocol23Format
+
+changed: [pongraczfarkas-1]
 
 TASK [rsyslog : start rsyslog] *************************************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 RUNNING HANDLER [rsyslog : Restart Rsyslog] ************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY [grafana] *****************************************************************
 
@@ -2614,10 +2614,10 @@ ok: [pongraczfarkas-3]
 
 TASK [docker : copy dns] *******************************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpsrzu301h/daemon.json
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpyu5it96q/daemon.json
 @@ -0,0 +1,3 @@
 +{
-+    "dns": ["192.168.42.200"]
++    "dns": ["192.168.42.25"]
 +}
 
 changed: [pongraczfarkas-3]
@@ -2652,7 +2652,7 @@ changed: [pongraczfarkas-3]
 
 TASK [grafana : Copy datasource.yaml] ******************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmplhu0pv38/datasource.yaml.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpk9p1yp_6/datasource.yaml.j2
 @@ -0,0 +1,31 @@
 +
 +apiVersion: 1
@@ -2690,7 +2690,7 @@ changed: [pongraczfarkas-3]
 
 TASK [grafana : Copy dashboard.yaml] *******************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp4q66khs6/dashboard.yaml
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpjvcodrv6/dashboard.yaml
 @@ -0,0 +1,24 @@
 +apiVersion: 1
 +
@@ -8137,22 +8137,22 @@ changed: [pongraczfarkas-3]
 PLAY [backup] ******************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [backup : Add the user "backup" and generate keys] ************************
 changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
 
 TASK [backup : Uploads /home/backup/.ssh/known_host] ***************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY [Keepalived] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Install keepalived] *****************************************
 The following additional packages will be installed:
@@ -8178,37 +8178,7 @@ changed: [pongraczfarkas-2]
 
 TASK [keepalived : Copy keepalived conf] ***************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpxk_wfpo6/keepalived.conf.j2
-@@ -0,0 +1,24 @@
-+vrrp_script check_haproxy {                 
-+    script "/usr/local/bin/ha88" 
-+    weight 51                             
-+    interval 1
-+}
-+
-+vrrp_instance agama {
-+    interface ens3
-+    virtual_router_id 13
-+    priority 50
-+    advert_int 1                            
-+    virtual_ipaddress {
-+                   
-+        192.168.100.146/24
-+    }
-+    unicast_peer {
-+                        192.168.42.146
-+                                    }
-+
-+    track_script {
-+        check_haproxy
-+    }
-+
-+}
-\ No newline at end of file
-
-changed: [pongraczfarkas-2]
---- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpalec5uu2/keepalived.conf.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp6fbe26e4/keepalived.conf.j2
 @@ -0,0 +1,24 @@
 +vrrp_script check_haproxy {                 
 +    script "/usr/local/bin/ha88" 
@@ -8223,10 +8193,10 @@ changed: [pongraczfarkas-2]
 +    advert_int 1                            
 +    virtual_ipaddress {
 +                   
-+        192.168.100.146/24
++        192.168.100.160/24
 +    }
 +    unicast_peer {
-+                                        192.168.42.62
++                                        192.168.42.148
 +                    }
 +
 +    track_script {
@@ -8237,10 +8207,40 @@ changed: [pongraczfarkas-2]
 \ No newline at end of file
 
 changed: [pongraczfarkas-1]
+--- before
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpvwg9hfgh/keepalived.conf.j2
+@@ -0,0 +1,24 @@
++vrrp_script check_haproxy {                 
++    script "/usr/local/bin/ha88" 
++    weight 51                             
++    interval 1
++}
++
++vrrp_instance agama {
++    interface ens3
++    virtual_router_id 13
++    priority 50
++    advert_int 1                            
++    virtual_ipaddress {
++                   
++        192.168.100.160/24
++    }
++    unicast_peer {
++                        192.168.42.160
++                                    }
++
++    track_script {
++        check_haproxy
++    }
++
++}
+\ No newline at end of file
+
+changed: [pongraczfarkas-2]
 
 TASK [keepalived : Copy ha88] **************************************************
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp_ce_e4pe/ha88.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpef3oyv2l/ha88.j2
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
@@ -8251,7 +8251,7 @@ TASK [keepalived : Copy ha88] **************************************************
 
 changed: [pongraczfarkas-1]
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpwv309qus/ha88.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpo7vshv5x/ha88.j2
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
@@ -8263,8 +8263,8 @@ changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [keepalived : start keepalived] *******************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Download keepalived exporter to /usr/local/bin/] ***
 changed: [pongraczfarkas-1]
@@ -8272,24 +8272,7 @@ changed: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Copy keepalived-prometheus-exporter.service.j2 to /etc/systemd/system/keepalived-prometheus-exporter.service / create keepalived prometheus exporter service] ***
 --- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp94jpsj2o/keepalived-prometheus-exporter.service.j2
-@@ -0,0 +1,11 @@
-+[Unit]
-+Description=Prometheus exporter for Keepalived
-+Documentation=https://github.com/cafebazaar/keepalived-exporter
-+
-+[Service]
-+User=root
-+ExecStart=/usr/local/bin/keepalived-exporter-1.2.0.linux-amd64/keepalived-exporter
-+
-+
-+[Install]
-+WantedBy=multi-user.target
-\ No newline at end of file
-
-changed: [pongraczfarkas-2]
---- before
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmp_9mjbwym/keepalived-prometheus-exporter.service.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp3n7rzrq5/keepalived-prometheus-exporter.service.j2
 @@ -0,0 +1,11 @@
 +[Unit]
 +Description=Prometheus exporter for Keepalived
@@ -8305,18 +8288,35 @@ changed: [pongraczfarkas-2]
 \ No newline at end of file
 
 changed: [pongraczfarkas-1]
+--- before
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpvd4ccmz_/keepalived-prometheus-exporter.service.j2
+@@ -0,0 +1,11 @@
++[Unit]
++Description=Prometheus exporter for Keepalived
++Documentation=https://github.com/cafebazaar/keepalived-exporter
++
++[Service]
++User=root
++ExecStart=/usr/local/bin/keepalived-exporter-1.2.0.linux-amd64/keepalived-exporter
++
++
++[Install]
++WantedBy=multi-user.target
+\ No newline at end of file
+
+changed: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Ensure that keepalived exporter is started] ********
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [keepalived : Restart keepalived] ******************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [keepalived_exporter : Reload daemons] *************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [keepalived_exporter : Restart keepalived_exporter] ************
 changed: [pongraczfarkas-2]
@@ -8325,8 +8325,8 @@ changed: [pongraczfarkas-1]
 PLAY [haproxy] *****************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [haproxy : Install 'haproxy'] *********************************************
 The following additional packages will be installed:
@@ -8348,7 +8348,7 @@ changed: [pongraczfarkas-1]
 
 TASK [haproxy : Copy haproxy.conf] *********************************************
 --- before: /etc/haproxy/haproxy.cfg
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpnwa9nvh1/haproxy.cfg.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpyhwecihc/haproxy.cfg.j2
 @@ -8,14 +8,11 @@
  	group haproxy
  	daemon
@@ -8382,7 +8382,7 @@ TASK [haproxy : Copy haproxy.conf] *********************************************
 
 changed: [pongraczfarkas-1]
 --- before: /etc/haproxy/haproxy.cfg
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpecwcixh0/haproxy.cfg.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpvyf94_dz/haproxy.cfg.j2
 @@ -8,14 +8,11 @@
  	group haproxy
  	daemon
@@ -8417,22 +8417,22 @@ changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [haproxy : Ensure haproxy is started] *************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Install 'prometheus-haproxy-exporter'] ****************
 The following NEW packages will be installed:
   prometheus-haproxy-exporter
 0 upgraded, 1 newly installed, 0 to remove and 228 not upgraded.
-changed: [pongraczfarkas-2]
+changed: [pongraczfarkas-1]
 The following NEW packages will be installed:
   prometheus-haproxy-exporter
 0 upgraded, 1 newly installed, 0 to remove and 228 not upgraded.
-changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Copy prometheus-haproxy-exporter] *********************
 --- before: /etc/default/prometheus-haproxy-exporter
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpd6hs7ndj/prometheus-haproxy-exporter.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmp8d_zo423/prometheus-haproxy-exporter.j2
 @@ -1,35 +1 @@
 -# Set the command-line arguments to pass to the server.
 -# Due to shell scaping, to pass backslashes for regexes, you need to double
@@ -8474,7 +8474,7 @@ TASK [haproxy_exporter : Copy prometheus-haproxy-exporter] *********************
 
 changed: [pongraczfarkas-1]
 --- before: /etc/default/prometheus-haproxy-exporter
-+++ after: /home/farkas/.ansible/tmp/ansible-local-30261q1w56ak/tmpofdmvnjv/prometheus-haproxy-exporter.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-2905i0k3n2jl/tmpvbh33moa/prometheus-haproxy-exporter.j2
 @@ -1,35 +1 @@
 -# Set the command-line arguments to pass to the server.
 -# Due to shell scaping, to pass backslashes for regexes, you need to double
@@ -8517,21 +8517,21 @@ changed: [pongraczfarkas-1]
 changed: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Ensure haproxy exporter is started] *******************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 RUNNING HANDLER [haproxy : Restart haproxy] ************************************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 RUNNING HANDLER [haproxy_exporter : Restart haproxy-exporter] ******************
-changed: [pongraczfarkas-2]
 changed: [pongraczfarkas-1]
+changed: [pongraczfarkas-2]
 
 PLAY RECAP *********************************************************************
-pongraczfarkas-1           : ok=106  changed=75   unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
-pongraczfarkas-2           : ok=99   changed=67   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
-pongraczfarkas-3           : ok=74   changed=53   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+pongraczfarkas-1           : ok=106  changed=76   unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+pongraczfarkas-2           : ok=99   changed=68   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
+pongraczfarkas-3           : ok=74   changed=54   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 + ansible-playbook infra.yaml --diff
 
@@ -8543,44 +8543,44 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 
 TASK [setup] *******************************************************************
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 
 PLAY [init] ********************************************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
-ok: [pongraczfarkas-1]
 
 TASK [init : Update APT cache] *************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 
 PLAY [bind] ********************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Install bind9] ****************************************************
+ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
-ok: [pongraczfarkas-1]
 
 TASK [bind : Install python-dnspython] *****************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Upload db.domain.j2] **********************************************
 skipping: [pongraczfarkas-1]
 skipping: [pongraczfarkas-2]
 --- before: /var/lib/bind/db.farkas.fp
-+++ after: /home/farkas/.ansible/tmp/ansible-local-6720lxvxy46z/tmpn7m0dem8/db.farkas.fp.j2
++++ after: /home/farkas/.ansible/tmp/ansible-local-6661s9tzux4g/tmpj10vgnum/db.farkas.fp.j2
 @@ -1,42 +1,21 @@
 -$ORIGIN .
 -$TTL 604800	; 1 week
@@ -8599,15 +8599,15 @@ skipping: [pongraczfarkas-2]
 -backup			A	192.168.42.132
 -cloudflare		A	1.1.1.1
 -$TTL 604800	; 1 week
--db			A	192.168.42.62
--			A	192.168.42.146
+-db			A	192.168.42.148
+-			A	192.168.42.160
 -$TTL 3600	; 1 hour
 -google			A	8.8.8.8
 -google2			A	8.8.4.4
 -grafana			CNAME	pongraczfarkas-3
 -$TTL 604800	; 1 week
--haproxy			A	192.168.42.62
--			A	192.168.42.146
+-haproxy			A	192.168.42.148
+-			A	192.168.42.160
 -$TTL 3600	; 1 hour
 -influxdb		CNAME	pongraczfarkas-3
 -lb1			CNAME	pongraczfarkas-1
@@ -8617,9 +8617,9 @@ skipping: [pongraczfarkas-2]
 -ns1			CNAME	pongraczfarkas-1
 -ns2			CNAME	pongraczfarkas-2
 -$TTL 604800	; 1 week
--pongraczfarkas-1	A	192.168.42.146
--pongraczfarkas-2	A	192.168.42.62
--pongraczfarkas-3	A	192.168.42.200
+-pongraczfarkas-1	A	192.168.42.160
+-pongraczfarkas-2	A	192.168.42.148
+-pongraczfarkas-3	A	192.168.42.25
 -$TTL 3600	; 1 hour
 -prometheus		CNAME	pongraczfarkas-3
 -web1			CNAME	pongraczfarkas-1
@@ -8635,14 +8635,14 @@ skipping: [pongraczfarkas-2]
 +farkas.fp.	IN	NS	pongraczfarkas-1
 +farkas.fp.	IN	NS	pongraczfarkas-2
 +farkas.fp.	IN	NS	pongraczfarkas-3
-+pongraczfarkas-1	IN	A	192.168.42.146 
-+pongraczfarkas-2	IN	A	192.168.42.62 
-+pongraczfarkas-3	IN	A	192.168.42.200 
-+db	IN	A	192.168.42.146 
-+db	IN	A	192.168.42.62 
++pongraczfarkas-1	IN	A	192.168.42.160 
++pongraczfarkas-2	IN	A	192.168.42.148 
++pongraczfarkas-3	IN	A	192.168.42.25 
++db	IN	A	192.168.42.160 
++db	IN	A	192.168.42.148 
 +
-+haproxy	IN	A	192.168.42.146 
-+haproxy	IN	A	192.168.42.62 
++haproxy	IN	A	192.168.42.160 
++haproxy	IN	A	192.168.42.148 
 +
 +backup	IN	A	192.168.42.132 
 
@@ -8659,9 +8659,9 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [bind : template] *********************************************************
+ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
 
 TASK [bind : Restart bind9] ****************************************************
 skipping: [pongraczfarkas-1]
@@ -8670,8 +8670,8 @@ skipping: [pongraczfarkas-3]
 
 TASK [bind : Ensure bind9 is started] ******************************************
 ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
 
 TASK [bind : Set A records] ****************************************************
 skipping: [pongraczfarkas-1] => (item=None) 
@@ -8697,9 +8697,10 @@ skipping: [pongraczfarkas-1] => (item=None)
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
@@ -8707,7 +8708,6 @@ skipping: [pongraczfarkas-2] => (item=None)
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1]
-skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
@@ -8740,25 +8740,25 @@ ok: [pongraczfarkas-2]
 
 TASK [dns : template] **********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [bind_exporter] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 
 TASK [bind_exporter : Install 'prometheus-bind-exporter'] **********************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind_exporter : Enable Bind9 exporter] ***********************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [Database servers] ********************************************************
 
@@ -8775,16 +8775,16 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [mysql : Copy the mysql config file and restart mysql server] *************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql : MySQL database] **************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql : MySQL user] ******************************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [mysql : Create MySQL replication user] ***********************************
 ok: [pongraczfarkas-1]
@@ -8807,30 +8807,30 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Create two necessary directories for backup] **************
-ok: [pongraczfarkas-1] => (item=/home/backup/restore)
 ok: [pongraczfarkas-2] => (item=/home/backup/restore)
-ok: [pongraczfarkas-1] => (item=/home/backup/mysql)
+ok: [pongraczfarkas-1] => (item=/home/backup/restore)
 ok: [pongraczfarkas-2] => (item=/home/backup/mysql)
+ok: [pongraczfarkas-1] => (item=/home/backup/mysql)
 
 TASK [mysql_backup : Copy MySQL configuration file] ****************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Copy mysql cron] ******************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [mysql_exporter : Install 'prometheus-mysqld-exporter'] *******************
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [mysql_exporter : Create directory] ***************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [mysql_exporter : Sleep for 10 seconds and continue with play] ************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Copy my.cnf.j2 to /var/lib/prometheus/.my.cnf] **********
 ok: [pongraczfarkas-1]
@@ -8849,8 +8849,8 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysqld exporter] **********************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysql] ********************************************
 ok: [pongraczfarkas-1]
@@ -8859,8 +8859,8 @@ ok: [pongraczfarkas-2]
 PLAY [Database handler] ********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_helper : mysql execute query] **************************************
 skipping: [pongraczfarkas-1] => (item=stop slave;) 
@@ -8873,12 +8873,12 @@ ok: [pongraczfarkas-2] => (item=start slave;)
 PLAY [web_app] *****************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [docker : Install docker.io and python3-docker] ***************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [docker : create folder] **************************************************
 ok: [pongraczfarkas-1]
@@ -8905,67 +8905,67 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [agama : Download agama.py] ***********************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [agama : Create agama docker image] ***************************************
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [agama : Agama Docker container] ******************************************
-ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-1] => (item=None)
+ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1] => (item=None)
 ok: [pongraczfarkas-1]
 
 TASK [uwsgi : Install uwsgi] ***************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [uwsgi : Install 'uwsgi-plugin-python3'] **********************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 PLAY [reverse_proxy] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx : Install 'nginx'] *************************************************
-ok: [pongraczfarkas-3]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [nginx : Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports] ***
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx : Start nginx] *****************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [nginx_exporter : Install 'prometheus-nginx-exporter'] ********************
-ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [nginx_exporter : Copy exporter to /etc/nginx/sites-enabled/exporter] *****
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Execute handlers preemptively] **************************
 
 TASK [nginx_exporter : Sleep for 10 seconds and continue with play] ************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Start nginx] ********************************************
 ok: [pongraczfarkas-1]
@@ -8981,13 +8981,13 @@ PLAY [vm exporters] ************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [node_exporter : Install 'prometheus-node-exporter'] **********************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [prometheus] **************************************************************
 
@@ -9082,8 +9082,8 @@ ok: [pongraczfarkas-1]
 PLAY [rsyslog] *****************************************************************
 
 TASK [rsyslog : Install Rsyslog] ***********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [rsyslog : Reconfigure Rsyslog] *******************************************
 ok: [pongraczfarkas-1]
@@ -9137,46 +9137,46 @@ ok: [pongraczfarkas-3]
 PLAY [backup] ******************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [backup : Add the user "backup" and generate keys] ************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [backup : Uploads /home/backup/.ssh/known_host] ***************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 PLAY [Keepalived] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Install keepalived] *****************************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [keepalived : Copy keepalived conf] ***************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Copy ha88] **************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : start keepalived] *******************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Download keepalived exporter to /usr/local/bin/] ***
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [keepalived_exporter : Copy keepalived-prometheus-exporter.service.j2 to /etc/systemd/system/keepalived-prometheus-exporter.service / create keepalived prometheus exporter service] ***
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Ensure that keepalived exporter is started] ********
 ok: [pongraczfarkas-1]
@@ -9197,12 +9197,12 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [haproxy : Ensure haproxy is started] *************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Install 'prometheus-haproxy-exporter'] ****************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Copy prometheus-haproxy-exporter] *********************
 ok: [pongraczfarkas-1]
@@ -9217,35 +9217,38 @@ pongraczfarkas-1           : ok=90   changed=0    unreachable=0    failed=0    s
 pongraczfarkas-2           : ok=85   changed=0    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
 pongraczfarkas-3           : ok=63   changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
 
-+ ansible all -b -m reboot -a test_command=uptime
-pongraczfarkas-3 | CHANGED => {
-    "changed": true,
-    "elapsed": 38,
-    "rebooted": true
-}
-pongraczfarkas-2 | CHANGED => {
-    "changed": true,
-    "elapsed": 48,
-    "rebooted": true
-}
++ ansible pongraczfarkas-1 -b -m reboot -a test_command=uptime
 pongraczfarkas-1 | CHANGED => {
     "changed": true,
-    "elapsed": 49,
+    "elapsed": 51,
     "rebooted": true
 }
++ ansible pongraczfarkas-2 -b -m reboot -a test_command=uptime
+pongraczfarkas-2 | CHANGED => {
+    "changed": true,
+    "elapsed": 52,
+    "rebooted": true
+}
++ ansible pongraczfarkas-3 -b -m reboot -a test_command=uptime
+pongraczfarkas-3 | CHANGED => {
+    "changed": true,
+    "elapsed": 28,
+    "rebooted": true
+}
++ sleep 30
 + ansible-playbook infra.yaml --diff
 
 PLAY [Collect info about all VMs] **********************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 
 TASK [setup] *******************************************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [init] ********************************************************************
 
@@ -9255,26 +9258,26 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [init : Update APT cache] *************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [bind] ********************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Install bind9] ****************************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Install python-dnspython] *****************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Upload db.domain.j2] **********************************************
 skipping: [pongraczfarkas-1]
@@ -9287,14 +9290,14 @@ skipping: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
 
 TASK [bind : template] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [bind : template] *********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind : Restart bind9] ****************************************************
 skipping: [pongraczfarkas-1]
@@ -9302,9 +9305,9 @@ skipping: [pongraczfarkas-2]
 skipping: [pongraczfarkas-3]
 
 TASK [bind : Ensure bind9 is started] ******************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [bind : Set A records] ****************************************************
 skipping: [pongraczfarkas-1] => (item=None) 
@@ -9334,11 +9337,11 @@ skipping: [pongraczfarkas-1] => (item=None)
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-1] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
-skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
+skipping: [pongraczfarkas-1] => (item=None) 
+skipping: [pongraczfarkas-2] => (item=None) 
 skipping: [pongraczfarkas-1] => (item=None) 
 skipping: [pongraczfarkas-1]
 skipping: [pongraczfarkas-2] => (item=None) 
@@ -9364,26 +9367,26 @@ ok: [pongraczfarkas-3]
 PLAY [add dns server to all host] **********************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [dns : template] **********************************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 PLAY [bind_exporter] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [bind_exporter : Install 'prometheus-bind-exporter'] **********************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [bind_exporter : Enable Bind9 exporter] ***********************************
 ok: [pongraczfarkas-1]
@@ -9393,20 +9396,20 @@ ok: [pongraczfarkas-3]
 PLAY [Database servers] ********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql : Install 'python3-mysql'] *****************************************
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [mysql : Install 'mysql-server'] ******************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql : Copy the mysql config file and restart mysql server] *************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql : MySQL database] **************************************************
 ok: [pongraczfarkas-2]
@@ -9425,34 +9428,34 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [mysql : Start mysql server] **********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Install duplicity] ****************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Create MySQL backup user] *********************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_backup : Create two necessary directories for backup] **************
-ok: [pongraczfarkas-2] => (item=/home/backup/restore)
 ok: [pongraczfarkas-1] => (item=/home/backup/restore)
-ok: [pongraczfarkas-2] => (item=/home/backup/mysql)
+ok: [pongraczfarkas-2] => (item=/home/backup/restore)
 ok: [pongraczfarkas-1] => (item=/home/backup/mysql)
+ok: [pongraczfarkas-2] => (item=/home/backup/mysql)
 
 TASK [mysql_backup : Copy MySQL configuration file] ****************************
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [mysql_backup : Copy mysql cron] ******************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Install 'prometheus-mysqld-exporter'] *******************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Create directory] ***************************************
 ok: [pongraczfarkas-1]
@@ -9463,12 +9466,12 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Copy my.cnf.j2 to /var/lib/prometheus/.my.cnf] **********
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Copy slave] *********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Create MySQL exporter user] *****************************
 ok: [pongraczfarkas-1]
@@ -9479,12 +9482,12 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysqld exporter] **********************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [mysql_exporter : Start mysql] ********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 PLAY [Database handler] ********************************************************
 
@@ -9503,12 +9506,12 @@ ok: [pongraczfarkas-2] => (item=start slave;)
 PLAY [web_app] *****************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [docker : Install docker.io and python3-docker] ***************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [docker : create folder] **************************************************
 ok: [pongraczfarkas-1]
@@ -9519,20 +9522,20 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [docker : Ensure docker is running] ***************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [agama : Creating  /opt/agama] ********************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [agama : Add the user agama] **********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [agama : Download agama container from URL] *******************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [agama : Download agama.py] ***********************************************
 ok: [pongraczfarkas-1]
@@ -9543,47 +9546,47 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [agama : Agama Docker container] ******************************************
-ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-1] => (item=None)
+ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-2] => (item=None)
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1] => (item=None)
 ok: [pongraczfarkas-1]
 
 TASK [uwsgi : Install uwsgi] ***************************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [uwsgi : Install 'uwsgi-plugin-python3'] **********************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 PLAY [reverse_proxy] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [nginx : Install 'nginx'] *************************************************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx : Nginx as uWSGI frontend, Nginx configuration, add Prometheus ports] ***
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [nginx : Start nginx] *****************************************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
-changed: [pongraczfarkas-3]
+ok: [pongraczfarkas-3]
 
 TASK [nginx_exporter : Install 'prometheus-nginx-exporter'] ********************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-2]
 
 TASK [nginx_exporter : Copy exporter to /etc/nginx/sites-enabled/exporter] *****
 ok: [pongraczfarkas-1]
@@ -9599,25 +9602,25 @@ ok: [pongraczfarkas-3]
 
 TASK [nginx_exporter : Start nginx] ********************************************
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-3]
 
 TASK [nginx_exporter : Start nginx exporter] ***********************************
 ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
-changed: [pongraczfarkas-3]
+ok: [pongraczfarkas-3]
 
 PLAY [vm exporters] ************************************************************
 
 TASK [Gathering Facts] *********************************************************
+ok: [pongraczfarkas-3]
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
-ok: [pongraczfarkas-3]
 
 TASK [node_exporter : Install 'prometheus-node-exporter'] **********************
-ok: [pongraczfarkas-2]
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-3]
+ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 PLAY [prometheus] **************************************************************
 
@@ -9712,12 +9715,12 @@ ok: [pongraczfarkas-1]
 PLAY [rsyslog] *****************************************************************
 
 TASK [rsyslog : Install Rsyslog] ***********************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [rsyslog : Reconfigure Rsyslog] *******************************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [rsyslog : start rsyslog] *************************************************
 ok: [pongraczfarkas-1]
@@ -9767,12 +9770,12 @@ ok: [pongraczfarkas-3]
 PLAY [backup] ******************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [backup : Add the user "backup" and generate keys] ************************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [backup : Uploads /home/backup/.ssh/known_host] ***************************
 ok: [pongraczfarkas-1]
@@ -9781,24 +9784,24 @@ ok: [pongraczfarkas-2]
 PLAY [Keepalived] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Install keepalived] *****************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Copy keepalived conf] ***************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived : Copy ha88] **************************************************
 ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [keepalived : start keepalived] *******************************************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Download keepalived exporter to /usr/local/bin/] ***
 ok: [pongraczfarkas-2]
@@ -9809,8 +9812,8 @@ ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
 
 TASK [keepalived_exporter : Ensure that keepalived exporter is started] ********
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 PLAY [haproxy] *****************************************************************
 
@@ -9831,12 +9834,12 @@ ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
 
 TASK [haproxy_exporter : Install 'prometheus-haproxy-exporter'] ****************
-ok: [pongraczfarkas-1]
 ok: [pongraczfarkas-2]
+ok: [pongraczfarkas-1]
 
 TASK [haproxy_exporter : Copy prometheus-haproxy-exporter] *********************
-ok: [pongraczfarkas-2]
 ok: [pongraczfarkas-1]
+ok: [pongraczfarkas-2]
 
 TASK [haproxy_exporter : Ensure haproxy exporter is started] *******************
 ok: [pongraczfarkas-1]
@@ -9845,7 +9848,7 @@ ok: [pongraczfarkas-2]
 PLAY RECAP *********************************************************************
 pongraczfarkas-1           : ok=90   changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
 pongraczfarkas-2           : ok=85   changed=0    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
-pongraczfarkas-3           : ok=62   changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+pongraczfarkas-3           : ok=62   changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
 
 + date
-T 20 dets  2022 01:48:39 EET
+T 20 dets  2022 13:38:34 EET
