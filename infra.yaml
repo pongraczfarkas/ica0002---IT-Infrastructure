@@ -4,7 +4,10 @@
     become: yes
     tasks:
       - setup:
-    tags:
+    tags: //tasksot itt nem használhatok
+    	//nginxben csak egy config fájl lehet
+    	//prometheus nem indulna újra
+    	//bind exporter és bind egy playben kell legyen
       - se  
 
   - name: init
