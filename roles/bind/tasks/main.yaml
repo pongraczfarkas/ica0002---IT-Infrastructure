@@ -11,6 +11,7 @@
     dest: /var/lib/bind/db.{{startup}}
     src: db.farkas.fp.j2
     mode: 0777
+    force: no
   notify: rndc reload
   when: inventory_hostname == master_dns
   
@@ -82,4 +83,14 @@
 - name: rndc reload
   shell: rndc reload
   when: isChanged.changed
+  
+- name: Install 'prometheus-bind-exporter'
+  apt:
+    name: prometheus-bind-exporter
+
+- name: Enable Bind9 exporter
+  service:
+    name: prometheus-bind-exporter
+    state: started
+    enabled: yes 
 

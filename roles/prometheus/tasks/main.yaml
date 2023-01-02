@@ -13,3 +13,12 @@
    src: prometheus.j2
    dest: /etc/default/prometheus
   notify: Restart prometheus
+  
+- name: Execute handlers preemptively
+  meta: flush_handlers
+  
+- name: Ensure prometheus is started
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

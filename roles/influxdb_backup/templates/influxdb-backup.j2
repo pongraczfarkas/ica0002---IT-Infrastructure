@@ -1,7 +1,7 @@
 
 
-11 0 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
+11 5 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
 
-11 0 * * 0  backup  duplicity --no-encryption full /home/backup/influxdb/ rsync://{{ backup_ssh }}//home/pongraczfarkas/
+11 5 * * 0  backup  duplicity --no-encryption full /home/backup/influxdb/ rsync://{{ backup_ssh }}//home/pongraczfarkas/
 
 11 0 * * 1-6  backup  duplicity --no-encryption incremental /home/backup/influxdb/ rsync://{{ backup_ssh }}//home/pongraczfarkas/

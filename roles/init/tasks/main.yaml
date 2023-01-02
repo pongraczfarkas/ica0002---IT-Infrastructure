@@ -1,3 +1,6 @@
+- name: gather facts from all vms
+  setup:
+
 - name: Update APT cache
   ansible.builtin.apt:
     cache_valid_time: 86400
