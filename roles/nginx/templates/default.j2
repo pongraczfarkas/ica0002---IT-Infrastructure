@@ -20,5 +20,8 @@ server {
 {% endif %}
 {% endfor %}	
 
-	
+	listen 8080;
+        location = /stub_status {
+                stub_status;
+        }
 }

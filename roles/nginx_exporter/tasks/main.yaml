@@ -1,11 +1,6 @@
 - name: Install 'prometheus-nginx-exporter'
   apt:
     name: prometheus-nginx-exporter
-
-- name: Copy exporter to /etc/nginx/sites-enabled/exporter
-  template:
-    src: exporter.j2
-    dest: /etc/nginx/sites-enabled/exporter
   notify: 
     - Restart nginx
     - Reload systemd
@@ -27,3 +22,4 @@
   service:
     name: prometheus-nginx-exporter
     state: started
+    enabled: yes
