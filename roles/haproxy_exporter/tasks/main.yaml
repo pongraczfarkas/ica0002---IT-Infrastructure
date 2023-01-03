@@ -13,3 +13,4 @@
   service:
     name: prometheus-haproxy-exporter
     state: started
+    enabled: yes
