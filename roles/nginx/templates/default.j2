@@ -2,6 +2,13 @@ server {
 
 	listen 80 default_server;
 	server_name _;
+	
+	listen 8080 default_server;
+        location = /stub_status {
+        	allow 127.0.0.1;
+        	deny all;
+                stub_status;
+        }
 
 
 {% for sites in reverse_proxy %}
@@ -20,8 +27,5 @@ server {
 {% endif %}
 {% endfor %}	
 
-	listen 8080;
-        location = /stub_status {
-                stub_status;
-        }
+	
 }
