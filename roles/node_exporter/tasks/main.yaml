@@ -1,3 +1,9 @@
 - name: Install 'prometheus-node-exporter'
   apt:
     name: prometheus-node-exporter
+
+- name: Make sure 'prometheus-node-exporter' started
+  service:
+    name: prometheus-node-exporter
+    status: started
+    enabled: yes
