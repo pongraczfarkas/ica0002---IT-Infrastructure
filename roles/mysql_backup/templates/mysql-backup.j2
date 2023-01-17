@@ -1,8 +1,7 @@
 {% if inventory_hostname != mysql_host -%}
-0 0 * * *  backup  mysqldump agama > /home/backup/mysql/agama.sql
+25 * * * *  backup  mysqldump agama > /home/backup/mysql/agama.sql
+25 * * * 0  backup  duplicity --no-encryption full /home/backup/mysql/ rsync://{{ backup_ssh }}.{{startup}}//home/pongraczfarkas/
 
-0 0 * * 0  backup  duplicity --no-encryption full /home/backup/mysql/ rsync://{{ backup_ssh }}//home/pongraczfarkas/
-
-0 0 * * 1-6  backup  duplicity --no-encryption incremental /home/backup/mysql/ rsync://{{ backup_ssh }}//home/pongraczfarkas/
-0 0 * * 1-6  backup  duplicity remove-older-than 1M --force rsync://{{ backup_ssh }}//home/pongraczfarkas/influxdb
+25 * * * 1-6  backup  duplicity --no-encryption incremental /home/backup/mysql/ rsync://{{ backup_ssh }}.{{startup}}//home/pongraczfarkas/
+25 * * * 1-6  backup  duplicity remove-older-than 1M --force rsync://{{ backup_ssh }}.{{startup}}//home/pongraczfarkas/influxdb
 {% endif -%}
